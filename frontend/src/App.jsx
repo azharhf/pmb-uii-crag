@@ -207,7 +207,34 @@ export default function App() {
         signal: abortControllerRef.current.signal
       });
 
-      const reader = response.body.getReader();
+      if (!response.ok) {
+        // Fallback to standard REST endpoint /api/chat if streaming endpoint returns non-200
+        const fallbackRes = await fetch(`${API_BASE_URL}/api/chat`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: textToSend, top_k: topKConfig, chat_history: historyPayload }),
+          signal: abortControllerRef.current.signal
+        });
+        if (!fallbackRes.ok) throw new Error(`HTTP error ${fallbackRes.status}`);
+        const data = await fallbackRes.json();
+        setMessages(prev => prev.map(m =>
+          m.id === aiMessageId ? {
+            ...m,
+            text: data.answer || "Maaf, terjadi kendala saat memproses jawaban.",
+            meta: {
+              decisionPath: data.decision_path,
+              confidenceLabel: data.relevance_eval_label,
+              topScore: data.top_relevance_score,
+              rewrittenQuery: data.rewritten_query,
+              citations: data.citations || [],
+              suggestedFollowup: data.suggested_followup,
+              latencyMs: data.total_latency_ms
+            }
+          } : m
+        ));
+        setLoading(false);
+        return;
+      }
       const decoder = new TextDecoder();
       let buffer = '';
       let accumulatedText = '';

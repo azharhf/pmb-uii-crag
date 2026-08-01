@@ -41,41 +41,32 @@ This Space hosts the FastAPI backend server powering the Corrective Retrieval-Au
     with open(os.path.join(staging_dir, "README.md"), "w", encoding="utf-8") as f:
         f.write(readme_content)
 
-    # 2. Create app.py with @spaces.GPU(duration=60) and PNA header middleware
+    # 2. Create app.py combining FastAPI REST/SSE endpoints (/api/chat/stream) + Gradio UI
     app_py_content = """import os
 import sys
 
 # Ensure root directory is in sys.path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-import torch
 import spaces
 import gradio as gr
-import backend.main as backend_main
+from backend.main import app as fastapi_app, init_crag_engine, log_crag_to_supabase
 
-# Mandatory ZeroGPU function requirement with explicit 60s duration allocation
+# Pre-initialize CRAG Engine for FastAPI
+init_crag_engine()
+
+# Mandatory ZeroGPU function requirement for Gradio interface
 @spaces.GPU(duration=60)
 def run_crag_inference(user_query: str):
-    \"\"\"ZeroGPU function requirement for Hugging Face ZeroGPU hardware allocation.\"\"\"
+    \"\"\"ZeroGPU function requirement for Gradio interactive interface.\"\"\"
     if not user_query or not user_query.strip():
         return {"error": "Query string cannot be empty."}
     
-    # Dynamically retrieve or initialize CRAG Engine instance
-    engine = backend_main.crag_engine_instance
-    if not engine:
-        try:
-            print("[+] Lazy-initializing CRAG Engine instance for ZeroGPU...")
-            engine = backend_main.init_crag_engine()
-            backend_main.crag_engine_instance = engine
-        except Exception as ie:
-            return {"error": f"Failed to initialize CRAG Engine: {str(ie)}"}
-    
+    engine = init_crag_engine()
     try:
         res = engine.process_query(user_query.strip(), top_k=5)
-        
-        # Async Supabase logging
         try:
-            backend_main.log_crag_to_supabase(
+            log_crag_to_supabase(
                 user_query=user_query.strip(),
                 decision_path=res.get("decision_path", "UNKNOWN"),
                 confidence_label=res.get("relevance_eval_label", "UNKNOWN"),
@@ -87,19 +78,17 @@ def run_crag_inference(user_query: str):
             )
         except Exception:
             pass
-            
         return res
     except Exception as e:
         return {"error": str(e)}
 
-# Premium Design Theme
+# Premium Soft Design Theme
 theme = gr.themes.Soft(
     primary_hue="indigo",
     secondary_hue="blue",
     neutral_hue="slate"
 )
 
-# Build Clean Native Gradio Interface
 with gr.Blocks(theme=theme, title="PMB UII AI Academic Assistant - CRAG Engine") as demo:
     gr.Markdown(
         \"\"\"
@@ -138,7 +127,7 @@ with gr.Blocks(theme=theme, title="PMB UII AI Academic Assistant - CRAG Engine")
         api_name="chat"
     )
 
-# Inject Chrome Private Network Access (PNA) Header Middleware into demo.app
+# Inject Chrome Private Network Access (PNA) Header Middleware into Gradio FastAPI app
 @demo.app.middleware("http")
 async def allow_private_network_access(request, call_next):
     response = await call_next(request)
@@ -146,12 +135,16 @@ async def allow_private_network_access(request, call_next):
     response.headers["Access-Control-Allow-Origin"] = "*"
     return response
 
-demo.launch()
+# Attach all FastAPI endpoints (/api/chat/stream, /api/chat, /api/documents, /health) to Gradio
+demo.app.include_router(fastapi_app.router)
+
+# Launch Gradio server on port 7860 to keep container running 24/7
+demo.launch(server_name="0.0.0.0", server_port=7860)
 """
     with open(os.path.join(staging_dir, "app.py"), "w", encoding="utf-8") as f:
         f.write(app_py_content)
 
-    # 3. Create requirements.txt (Includes spaces==0.51.1 and pinned hub/gradio)
+    # 3. Create requirements.txt
     requirements_content = """spaces==0.51.1
 huggingface-hub<0.24.0
 fastapi<0.113.0
@@ -182,7 +175,7 @@ gradio==4.44.1
             folder_path=staging_dir,
             repo_id=REPO_ID,
             repo_type="space",
-            commit_message="Deploy backend with os.environ GEMINI_API_KEYS support"
+            commit_message="Attach FastAPI router (/api/chat/stream) to demo.app and call demo.launch()"
         )
         print("      Files uploaded successfully!")
     except Exception as e:
