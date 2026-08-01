@@ -489,10 +489,10 @@ class CorrectiveRAGEngine:
             )
             return answer, []
 
-        # S4: Prepare Context String — reduced from 3500×8 to 1800×5 for faster TTFT
+        # Prepare Context String — uses all retrieved docs up to top_k requested
         context_snippets = []
         citations = []
-        max_docs = min(len(docs), 5)  # S4: Limit to top-5 most relevant docs
+        max_docs = len(docs)
         for d in docs[:max_docs]:
             mod = d["module"]
             title = d["section_title"]
@@ -585,10 +585,10 @@ class CorrectiveRAGEngine:
             yield {"type": "final", "answer": answer, "citations": []}
             return
 
-        # S4: Prepare Context — reduced to top-5 docs, 1800 chars each
+        # Prepare Context — uses all retrieved docs up to top_k requested
         context_snippets = []
         citations = []
-        max_docs = min(len(docs), 5)
+        max_docs = len(docs)
         for d in docs[:max_docs]:
             mod = d["module"]
             title = d["section_title"]
