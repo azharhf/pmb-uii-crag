@@ -253,12 +253,10 @@ def _patched_create_app(*args, **kwargs):
 _gr_routes.App.create_app = _patched_create_app
 
 # ──────────────────────────────────────────────────────────────────────────────
-# STEP 1: Import Gradio + ZeroGPU (AFTER monkey-patch)
+# STEP 1: Import Gradio (CPU Basic Free Tier 24/7 Unlimited)
 # ──────────────────────────────────────────────────────────────────────────────
-import spaces
 import gradio as gr
 
-@spaces.GPU(duration=60)
 def run_crag_inference_gui(user_query: str, top_k: int = 5):
     if not user_query or not user_query.strip():
         return "Mohon masukkan pertanyaan seputar PMB UII.", "[ERROR] Kueri Kosong", [], {"error": "Query cannot be empty."}
@@ -346,7 +344,7 @@ with gr.Blocks(theme=theme, title="PMB UII AI Academic Assistant") as demo:
                         lines=3
                     )
                     top_k_slider = gr.Slider(minimum=1, maximum=10, value=5, step=1, label="Top-K Retrieval Documents")
-                    submit_btn = gr.Button("Kirim Pertanyaan (ZeroGPU)", variant="primary", size="lg")
+                    submit_btn = gr.Button("Kirim Pertanyaan", variant="primary", size="lg")
                     gr.Examples(
                         examples=[
                             ["Berapa biaya pendaftaran PMB UII?"],
@@ -532,9 +530,8 @@ demo.launch(server_name="0.0.0.0", server_port=7860)
     with open(os.path.join(staging_dir, "app.py"), "w", encoding="utf-8") as f:
         f.write(app_py_content)
 
-    # 3. Create requirements.txt (NO google-genai to avoid websockets conflict)
-    requirements_content = """spaces==0.51.1
-huggingface-hub<0.24.0
+    # 3. Create requirements.txt (CPU Basic Free Tier 24/7 Unlimited)
+    requirements_content = """huggingface-hub<0.24.0
 fastapi<0.113.0
 uvicorn>=0.28.0
 pydantic>=2.6.0
