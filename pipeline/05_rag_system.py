@@ -318,6 +318,7 @@ class HybridPMBRetriever:
 
     def _cross_encoder_rerank(self, query, candidate_indices, hybrid_scores, dense_sims, bm25_scores, top_k=5):
         q_lower = query.lower()
+        q_tokens = set(re.findall(r'\w+', q_lower))
         is_fee_query = any(w in q_lower for w in ['biaya', 'tarif', 'spp', 'uka', 'ukk', 'bayar', 'harga', 'biayanya'])
         reranked = []
         for idx in candidate_indices:
