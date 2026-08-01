@@ -253,10 +253,16 @@ def _patched_create_app(*args, **kwargs):
 _gr_routes.App.create_app = _patched_create_app
 
 # ──────────────────────────────────────────────────────────────────────────────
-# STEP 1: Import Gradio (CPU Basic Free Tier 24/7 Unlimited)
+# STEP 1: Import Gradio & Spaces (Compatible with ZeroGPU & CPU Basic Hardware)
 # ──────────────────────────────────────────────────────────────────────────────
 import gradio as gr
+try:
+    import spaces
+    _gpu_dec = spaces.GPU(duration=30)
+except Exception:
+    _gpu_dec = lambda fn: fn
 
+@_gpu_dec
 def run_crag_inference_gui(user_query: str, top_k: int = 5):
     if not user_query or not user_query.strip():
         return "Mohon masukkan pertanyaan seputar PMB UII.", "[ERROR] Kueri Kosong", [], {"error": "Query cannot be empty."}
@@ -530,8 +536,9 @@ demo.launch(server_name="0.0.0.0", server_port=7860)
     with open(os.path.join(staging_dir, "app.py"), "w", encoding="utf-8") as f:
         f.write(app_py_content)
 
-    # 3. Create requirements.txt (CPU Basic Free Tier 24/7 Unlimited)
-    requirements_content = """huggingface-hub<0.24.0
+    # 3. Create requirements.txt (Dual Hardware Compatible)
+    requirements_content = """spaces==0.51.1
+huggingface-hub<0.24.0
 fastapi<0.113.0
 uvicorn>=0.28.0
 pydantic>=2.6.0
