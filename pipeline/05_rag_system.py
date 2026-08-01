@@ -190,7 +190,7 @@ def call_gemini_api_stream(prompt, system_instruction=None):
     """
     S2a: True Server-Side Streaming — yields token chunks from Gemini API
     as they are generated, for real-time SSE delivery to frontend.
-    Uses gemini-3.6-flash / gemini-1.5-flash with resilient failover across all available API keys.
+    Uses gemini-3.6-flash with resilient failover across all available API keys.
     """
     global _current_key_idx
     if not GEMINI_KEYS or not _GENAI_AVAILABLE:
@@ -317,17 +317,22 @@ class HybridPMBRetriever:
         return scores
 
     def _cross_encoder_rerank(self, query, candidate_indices, hybrid_scores, dense_sims, bm25_scores, top_k=5):
-        """Pilar 2: Two-Stage Precision Cross-Encoder Reranker."""
-        q_tokens = set(re.findall(r'\w+', query.lower()))
+        q_lower = query.lower()
+        is_fee_query = any(w in q_lower for w in ['biaya', 'tarif', 'spp', 'uka', 'ukk', 'bayar', 'harga', 'biayanya'])
         reranked = []
         for idx in candidate_indices:
             title = self.titles[idx].lower()
             text = self.raw_texts[idx].lower()
+            mod = self.modules[idx].upper()
 
             # Interaction score: title exact match + keyword overlap density + hybrid score
             title_hits = sum(2.5 for qt in q_tokens if qt in title)
             text_hits = sum(1.0 for qt in q_tokens if qt in text)
             interaction_score = (title_hits * 1.5) + (text_hits * 0.5)
+
+            # Intent-Based Domain Boost: Fee queries strongly prioritize BIAYA module chunks
+            if is_fee_query and (mod == 'BIAYA' or 'uang kuliah' in title or 'spp' in title):
+                interaction_score += 4.0
 
             norm_interact = min(interaction_score / (len(q_tokens) * 2.0 + 1e-5), 1.0)
             final_rerank_score = (0.55 * hybrid_scores[idx]) + (0.45 * norm_interact)
