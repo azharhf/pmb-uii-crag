@@ -1129,16 +1129,16 @@ export default function App() {
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Ketik pertanyaan seputar pendaftaran, biaya, atau beasiswa UII..."
+                placeholder="Tanya pendaftaran, biaya, atau beasiswa UII..."
                 disabled={loading}
-                className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-3xl px-6 py-4 focus:outline-none focus:border-[#22489E] focus:ring-2 focus:ring-[#22489E]/20 transition-all duration-200 font-sans text-sm text-[#0F172A] placeholder-slate-400 shadow-xs disabled:opacity-50"
+                className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-3xl pl-5 pr-14 py-3.5 sm:pl-6 sm:pr-16 sm:py-4 focus:outline-none focus:border-[#22489E] focus:ring-2 focus:ring-[#22489E]/20 transition-all duration-200 font-sans text-sm text-[#0F172A] placeholder-slate-400 shadow-xs disabled:opacity-50 truncate"
               />
 
               {loading ? (
                 <button
                   type="button"
                   onClick={handleStopExecution}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-slate-800 hover:bg-[#E11D48] text-white rounded-full transition-all duration-200 active:scale-95 shadow-xs"
+                  className="absolute right-2.5 sm:right-3 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center bg-slate-800 hover:bg-[#E11D48] text-white rounded-full transition-all duration-200 active:scale-95 shadow-xs"
                   title="Hentikan Generasi Jawaban (Stop)"
                 >
                   <Square className="w-4 h-4 fill-white" />
@@ -1147,7 +1147,7 @@ export default function App() {
                 <button
                   type="submit"
                   disabled={!query.trim()}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center bg-[#22489E] text-white rounded-full hover:bg-[#1E3A8A] transition-all duration-200 active:scale-95 shadow-xs disabled:opacity-30"
+                  className="absolute right-2.5 sm:right-3 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center bg-[#22489E] text-white rounded-full hover:bg-[#1E3A8A] transition-all duration-200 active:scale-95 shadow-xs disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none disabled:cursor-not-allowed disabled:hover:bg-slate-200"
                   title="Kirim Pertanyaan"
                 >
                   <Send className="w-4 h-4" />
