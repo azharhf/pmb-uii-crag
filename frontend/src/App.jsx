@@ -235,6 +235,7 @@ export default function App() {
         setLoading(false);
         return;
       }
+      const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let buffer = '';
       let accumulatedText = '';
