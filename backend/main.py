@@ -164,7 +164,8 @@ if os.path.exists(unduh_dir):
 def get_official_documents():
     """Returns a complete list of all official PDF and DOCX documents hosted on Supabase Storage CDN."""
     docs = []
-    supabase_base = f"{s_url.rstrip('/')}/storage/v1/object/public/pmb-documents" if s_url else None
+    sup_url = os.environ.get("SUPABASE_URL", "") or s_url or "https://idrhzigiaewgtqexfgbj.supabase.co"
+    supabase_base = f"{sup_url.rstrip('/')}/storage/v1/object/public/pmb-documents"
     
     # 1. PDF Brochures
     if os.path.exists(pdf_dir):
@@ -202,6 +203,38 @@ def get_official_documents():
                         "size": f"{size_mb} MB",
                         "download_url": dl_url
                     })
+
+    # 3. Fallback Manifest when local raw files are not packaged in cloud deployment
+    if not docs and supabase_base:
+        official_manifest = [
+            ("Brosur Fakultas Kedokteran FK UII", "Brosur_Fakultas_Kedokteran_FK_UII.pdf", "Brosur PDF Resmi", "PDF", "2.4 MB", f"{supabase_base}/pdf/Brosur_Fakultas_Kedokteran_FK_UII.pdf"),
+            ("Brosur Fakultas Hukum FH UII", "Brosur_Fakultas_Hukum_FH_UII.pdf", "Brosur PDF Resmi", "PDF", "2.1 MB", f"{supabase_base}/pdf/Brosur_Fakultas_Hukum_FH_UII.pdf"),
+            ("Brosur Fakultas Ilmu Agama Islam FIAI UII", "Brosur_Fakultas_Ilmu_Agama_Islam_FIAI_UII.pdf", "Brosur PDF Resmi", "PDF", "1.9 MB", f"{supabase_base}/pdf/Brosur_Fakultas_Ilmu_Agama_Islam_FIAI_UII.pdf"),
+            ("Brosur Fakultas MIPA FMIPA UII", "Brosur_Fakultas_MIPA_FMIPA_UII.pdf", "Brosur PDF Resmi", "PDF", "2.3 MB", f"{supabase_base}/pdf/Brosur_Fakultas_MIPA_FMIPA_UII.pdf"),
+            ("Brosur Fakultas Psikologi FPSB UII", "Brosur_Fakultas_Psikologi_dan_Ilmu_Sosial_Budaya_FPSB_UII.pdf", "Brosur PDF Resmi", "PDF", "2.0 MB", f"{supabase_base}/pdf/Brosur_Fakultas_Psikologi_dan_Ilmu_Sosial_Budaya_FPSB_UII.pdf"),
+            ("Brosur Fakultas Teknik Sipil FTSP UII", "Brosur_Fakultas_Teknik_Sipil_dan_Perencanaan_FTSP_UII.pdf", "Brosur PDF Resmi", "PDF", "2.5 MB", f"{supabase_base}/pdf/Brosur_Fakultas_Teknik_Sipil_dan_Perencanaan_FTSP_UII.pdf"),
+            ("Brosur Fakultas Teknologi Industri FTI UII", "Brosur_Fakultas_Teknologi_Industri_FTI_UII.pdf", "Brosur PDF Resmi", "PDF", "2.6 MB", f"{supabase_base}/pdf/Brosur_Fakultas_Teknologi_Industri_FTI_UII.pdf"),
+            ("Brosur Fakultas Bisnis dan Ekonomika FBE UII", "Brosur_Fakultas_Bisnis_dan_Ekonomika_FBE_UII.pdf", "Brosur PDF Resmi", "PDF", "2.2 MB", f"{supabase_base}/pdf/Brosur_Fakultas_Bisnis_dan_Ekonomika_FBE_UII.pdf"),
+            ("Brosur Program Diploma D3 D4 UII", "Brosur_Program_Diploma_D3_D4_UII.pdf", "Brosur PDF Resmi", "PDF", "1.8 MB", f"{supabase_base}/pdf/Brosur_Program_Diploma_D3_D4_UII.pdf"),
+            ("Brosur Program Pascasarjana Profesi UII", "Brosur_Program_Pascasarjana_Profesi_UII.pdf", "Brosur PDF Resmi", "PDF", "1.9 MB", f"{supabase_base}/pdf/Brosur_Program_Pascasarjana_Profesi_UII.pdf"),
+            ("Panduan PMB UII 2026", "Panduan_PMB_UII_2026.pdf", "Panduan & Form Pendaftaran", "PDF", "3.1 MB", f"{supabase_base}/unduh/Panduan_PMB_UII_2026.pdf"),
+            ("Alur Pendaftaran CBT UII", "Alur_Pendaftaran_CBT_UII.pdf", "Panduan & Form Pendaftaran", "PDF", "1.4 MB", f"{supabase_base}/unduh/Alur_Pendaftaran_CBT_UII.pdf"),
+            ("Formulir Pendaftaran Jalur Beasiswa", "Formulir_Pendaftaran_Jalur_Beasiswa.docx", "Panduan & Form Pendaftaran", "DOCX", "0.5 MB", f"{supabase_base}/unduh/Formulir_Pendaftaran_Jalur_Beasiswa.docx"),
+            ("Syarat Ketentuan Beasiswa Hafiz 2026", "Syarat_Ketentuan_Beasiswa_Hafiz_2026.pdf", "Panduan & Form Pendaftaran", "PDF", "1.2 MB", f"{supabase_base}/unduh/Syarat_Ketentuan_Beasiswa_Hafiz_2026.pdf"),
+            ("Tata Cara Pembayaran Bank", "Tata_Cara_Pembayaran_Bank.pdf", "Panduan & Form Pendaftaran", "PDF", "1.1 MB", f"{supabase_base}/unduh/Tata_Cara_Pembayaran_Bank.pdf"),
+            ("Tabel Tarif SPP dan Catur Darma 2026", "Tabel_Tarif_SPP_dan_Catur_Darma_2026.pdf", "Panduan & Form Pendaftaran", "PDF", "1.6 MB", f"{supabase_base}/unduh/Tabel_Tarif_SPP_dan_Catur_Darma_2026.pdf"),
+            ("Formulir Keringanan Biaya", "Formulir_Keringanan_Biaya.docx", "Panduan & Form Pendaftaran", "DOCX", "0.4 MB", f"{supabase_base}/unduh/Formulir_Keringanan_Biaya.docx"),
+            ("Surat Pernyataan Keabsahan Dokumen", "Surat_Pernyataan_Keabsahan_Dokumen.docx", "Panduan & Form Pendaftaran", "DOCX", "0.3 MB", f"{supabase_base}/unduh/Surat_Pernyataan_Keabsahan_Dokumen.docx"),
+        ]
+        for title, fname, cat, ftype, sz, url in official_manifest:
+            docs.append({
+                "title": title,
+                "filename": fname,
+                "category": cat,
+                "type": ftype,
+                "size": sz,
+                "download_url": url
+            })
 
     return {"total": len(docs), "documents": docs}
 
@@ -488,7 +521,8 @@ def get_full_document(module_name: str):
 
     # 1. Try loading from Supabase Storage CDN first
     content = None
-    supabase_cdn = f"{s_url.rstrip('/')}/storage/v1/object/public/pmb-documents/master_md/{fname}" if s_url else None
+    sup_url = os.environ.get("SUPABASE_URL", "") or s_url or "https://idrhzigiaewgtqexfgbj.supabase.co"
+    supabase_cdn = f"{sup_url.rstrip('/')}/storage/v1/object/public/pmb-documents/master_md/{fname}"
     if supabase_cdn:
         try:
             import requests
