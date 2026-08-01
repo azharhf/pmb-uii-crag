@@ -1,0 +1,39 @@
+# Environment Variables & Secrets
+.env
+.env.local
+.env.*.local
+
+# Python Virtual Environment & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# Logs & Debugging Output
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Node / Vite Frontend Build Artifacts
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+
+# Data Processing Temporary Files
+data/raw/brosur/images_temp/
+
+# OS System Files
+.DS_Store
+Thumbs.db
+
+# UAS Exam Question & Reports
+soal UAS TToS Juli 2026.pdf
+Laporan_UAS_TToS_UII.Rmd
+Laporan_UAS_TToS_UII.pdf
+Laporan_UAS_TToS_UII.md
+Laporan_UAS_TToS_UII.knit.md
+Laporan_UAS_TToS_UII.tex
+Laporan_UAS_TToS_UII.aux

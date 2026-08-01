@@ -1,0 +1,232 @@
+{
+  "bank_steps": [
+    {
+      "bank": "Bank Mandiri",
+      "method": "VIA TELLER DI KANTOR CABANG/KAS/KAS PEMBANTU",
+      "steps": [
+        "Datang ke Kantor Cabang/Kantor Kas Bank Mandiri di seluruh Indonesia.",
+        "Isi Formulir Multi Payment/Multi Pembayaran.",
+        "Melakukan pembayaaran di teller Bank Mandiri."
+      ]
+    },
+    {
+      "bank": "Bank Mandiri",
+      "method": "VIA ATM BANK MANDIRI",
+      "steps": [
+        "Pilih menu “ BAYAR/BELI “.",
+        "Pilih menu “ PENDIDIKAN “.",
+        "Masukan kode institusi “ 10011 “, kemudian tekan tombol “ BENAR “.",
+        "Masukan nomor tagihan kemudian tekan tombol “ BENAR “.",
+        "Layar akan menampilkan identitas dan jumlah pembayaran, apabila data sudah sesuai tekan angka “ 1 “.",
+        "Selanjutnya tekan tombol “ YA “.",
+        "Struk pembayaran melalui mesin ATM harap di simpan sebagai bukti pembayaran formulir mahasiswa baru/registrasi/SPP."
+      ]
+    },
+    {
+      "bank": "Bank Mandiri",
+      "method": "VIA MANDIRI ONLINE",
+      "steps": [
+        "Pilih menu “ BAYAR “. Buat pembayaran baru pilih menu “ PENDIDIKAN “.",
+        "Pilih penyedia jasa masukan kode institusi “ 10011 “.",
+        "Masukkan Nomor Tagihan dan isi Deskripsi Pembayaran (Formulir Pembayaran, Registrasi, SPP) Klik “ LANJUT “. Konfirmasi pembayaran, masukan kode pembayaran “ 01 “",
+        "Setelah muncul konfirmasi pembayaran dan nominal sesuai silahakan masukkan “ MPIN ” Mandiri Online.",
+        "Transaksi berhasil, bukti bisa diunduh/dicetak via email nasabah sebagai bukti pembayaran."
+      ]
+    },
+    {
+      "bank": "BSI",
+      "method": "Petunjuk Pembayaran",
+      "steps": [
+        "Login → Menu Bayar”.",
+        "Pilih “ Akademik “.",
+        "Pilih nama akademik: 9053 – Universitas Islam Indonesia Untuk pembayaran PMB, KKN, Wisuda, Ijazah dan Alumni, Kerja Praktik dan Remidi 9067 – PYBW UII Untuk pembayaran SPP, Caturdharma dan Registrasi Mahasiswa Baru",
+        "9053 – Universitas Islam Indonesia Untuk pembayaran PMB, KKN, Wisuda, Ijazah dan Alumni, Kerja Praktik dan Remidi",
+        "9067 – PYBW UII Untuk pembayaran SPP, Caturdharma dan Registrasi Mahasiswa Baru",
+        "Masukkan No Tagihan.",
+        "Konfirmasi Jumlah Pembayaran."
+      ]
+    },
+    {
+      "bank": "BSI",
+      "method": "Petunjuk Pembayaran",
+      "steps": [
+        "9053 – Universitas Islam Indonesia Untuk pembayaran PMB, KKN, Wisuda, Ijazah dan Alumni, Kerja Praktik dan Remidi",
+        "9067 – PYBW UII Untuk pembayaran SPP, Caturdharma dan Registrasi Mahasiswa Baru"
+      ]
+    },
+    {
+      "bank": "BSI",
+      "method": "Petunjuk Pembayaran",
+      "steps": [
+        "Masukkan Kartu ATM → PIN.",
+        "Pilih Menu Pembayaran/Pembelian",
+        "Pilih Menu Akademik",
+        "Masukkan kode Universitas dengan format sebagai berikut: Untuk pembayaran PMB, KKN, Wisuda, Ijazah dan Alumni, Kerja Praktik dan Remidi → 9009053 + nomor tagihan . Contoh: 9009053020000001 Untuk pembayaran SPP, Caturdharma dan Registrasi Mahasiswa Baru → 9009067 + nomor tagihan . Contoh: 9009067010000001",
+        "Untuk pembayaran PMB, KKN, Wisuda, Ijazah dan Alumni, Kerja Praktik dan Remidi → 9009053 + nomor tagihan . Contoh: 9009053020000001",
+        "Untuk pembayaran SPP, Caturdharma dan Registrasi Mahasiswa Baru → 9009067 + nomor tagihan . Contoh: 9009067010000001",
+        "Konfirmasi Jumlah Pembayaran",
+        "Apabila sesuai, pilih “Ya”"
+      ]
+    },
+    {
+      "bank": "BSI",
+      "method": "Petunjuk Pembayaran",
+      "steps": [
+        "Untuk pembayaran PMB, KKN, Wisuda, Ijazah dan Alumni, Kerja Praktik dan Remidi → 9009053 + nomor tagihan . Contoh: 9009053020000001",
+        "Untuk pembayaran SPP, Caturdharma dan Registrasi Mahasiswa Baru → 9009067 + nomor tagihan . Contoh: 9009067010000001"
+      ]
+    },
+    {
+      "bank": "BSI",
+      "method": "Petunjuk Pembayaran",
+      "steps": [
+        "Login ke Internet Banking.",
+        "Pilih Menu Pembayaran",
+        "Pilih jenis pembayaran institusi: Pilih Akademik – Universitas Islam Indonesia Untuk pembayaran PMB, KKN, Wisuda, Ijazah dan Alumni, Kerja Praktik dan Remidi → Masukkan No tagihan Pilih Akademik – PYBW UII Untuk pembayaran SPP, Caturdharma dan Registrasi Mahasiswa Baru → Masukkan No tagihan",
+        "Pilih Akademik – Universitas Islam Indonesia Untuk pembayaran PMB, KKN, Wisuda, Ijazah dan Alumni, Kerja Praktik dan Remidi → Masukkan No tagihan",
+        "Pilih Akademik – PYBW UII Untuk pembayaran SPP, Caturdharma dan Registrasi Mahasiswa Baru → Masukkan No tagihan",
+        "Konfirmasi Jumlah Pembayaran",
+        "Masukkan TAN dan PIN Otorisasi → Cetak Bukti"
+      ]
+    },
+    {
+      "bank": "BSI",
+      "method": "Petunjuk Pembayaran",
+      "steps": [
+        "Pilih Akademik – Universitas Islam Indonesia Untuk pembayaran PMB, KKN, Wisuda, Ijazah dan Alumni, Kerja Praktik dan Remidi → Masukkan No tagihan",
+        "Pilih Akademik – PYBW UII Untuk pembayaran SPP, Caturdharma dan Registrasi Mahasiswa Baru → Masukkan No tagihan"
+      ]
+    },
+    {
+      "bank": "Bank BPD DIY",
+      "method": "VIA TELLER DI SELURUH KANTOR LAYANAN",
+      "steps": [
+        "Calon Mahasiswa datang ke kantor layanan Bank BPD DIY dan menuju teller.",
+        "Mahasiswa menunjukkan/menyebutkan Nomor Tagihan ke teller.",
+        "Teller akan memproses transaksi pembayaran dan calon mahasiswa diberi bukti untuk pembayaran 2 (dua) lembar salinan."
+      ]
+    },
+    {
+      "bank": "Bank BPD DIY",
+      "method": "VIA MESIN ATM BANK BPD DIY",
+      "steps": [
+        "Login ke mesin ATM.",
+        "Pilih menu “ Pembayaran “.",
+        "Pilih “ Layanan Pendidikan ” > “ Universitas ” > “ UII ” > “ Akademik “.",
+        "Masukkan nomor tagihan.",
+        "Konfirmasi jumlah pembayaran dan lakukan transaksi."
+      ]
+    },
+    {
+      "bank": "Bank BPD DIY",
+      "method": "VIA MOBILE BANKING BPD DIY",
+      "steps": [
+        "Login kemudian pilih menu “ Pembayaran “.",
+        "Pilih “ Universitas ” > “ Universitas Islam Indonesia “.",
+        "Masukkan nomor tagihan.",
+        "Konfirmasi jumlah pembayaran dan lakukan transaksi.",
+        "Bukti pembayaran bisa dicetak melalui email yang terdaftar pada aktivasi mobile banking, atau datang langsung ke loket bank BPD DIY Syariah UII ."
+      ]
+    },
+    {
+      "bank": "Bank BPD DIY",
+      "method": "VIA TELLER DI SELURUH KANTOR LAYANAN",
+      "steps": [
+        "Calon Mahasiswa datang ke kantor layanan Bank BPD DIY dan menuju teller.",
+        "Mahasiswa menunjukkan/menyebutkan Nomor Tagihan ke teller.",
+        "Teller akan memproses transaksi pembayaran dan calon mahasiswa diberi bukti untuk pembayaran 2 (dua) lembar salinan."
+      ]
+    },
+    {
+      "bank": "Bank BPD DIY",
+      "method": "VIA MESIN ATM BANK BPD DIY",
+      "steps": [
+        "Login ke mesin ATM.",
+        "Pilih menu “ Pembayaran “.",
+        "Pilih “ Layanan Pendidikan ” > “ Universitas ” > “ UII ” > “ Akademik “.",
+        "Masukkan nomor tagihan.",
+        "Konfirmasi jumlah pembayaran dan lakukan transaksi."
+      ]
+    },
+    {
+      "bank": "Bank BPD DIY",
+      "method": "VIA MOBILE BANKING BPD DIY",
+      "steps": [
+        "Login kemudian pilih menu “ Pembayaran “.",
+        "Pilih “ Universitas ” > “ Universitas Islam Indonesia “.",
+        "Masukkan nomor tagihan.",
+        "Konfirmasi jumlah pembayaran dan lakukan transaksi.",
+        "Bukti pembayaran bisa dicetak melalui email yang terdaftar pada aktivasi mobile banking, atau datang langsung ke loket bank BPD DIY Syariah UII ."
+      ]
+    },
+    {
+      "bank": "Bank Bukopin",
+      "method": "VIA TELLER DI KANTOR CABANG/ KAS/ KAS PEMBANTU",
+      "steps": [
+        "Mahasiswa datang ke kantor KB Bukopin, sampaikan kepada petugas bahwa akan melakukan pembayaran tagihan Pendidikan Universitas Islam Indonesia (UII).",
+        "Sampaikan No. Tagihan/Bill Number kepada petugas.",
+        "Teller akan menyampaikan jumlah nominal tagihan, nama, dan keterangan pembayaran.",
+        "Mahasiswa menyediakan dana sesuai dengan nominal tagihan.",
+        "Sebagai bukti pembayaran Mahasiswa akan menerima slip/bukti pembayaran yang telah divalidasi."
+      ]
+    },
+    {
+      "bank": "Bank Bukopin",
+      "method": "VIA ATM KB BUKOPIN",
+      "steps": [
+        "Login ke mesin ATM.",
+        "Pilih Menu “ Pembayaran – Pendidikan “.",
+        "Masukkan Kode Instansi Pendidikan Universitas Islam Indonesia (UII) – 070999 .",
+        "Masukkan No. Tagihan/Bill Number.",
+        "Konfirmasi jumlah pembayaran dan lakukan transaksi."
+      ]
+    },
+    {
+      "bank": "Bank Bukopin",
+      "method": "VIA APLIKASI BUKOPINET",
+      "steps": [
+        "Login ke Aplikasi Bukopinet.",
+        "Pilih Menu “ Pembayaran – Pendidikan “.",
+        "Pilih Instansi Pendidikan Universitas Islam Indonesia (UII) – 070999 .",
+        "Masukkan No. Tagihan/Bill Number.",
+        "Konfirmasi jumlah pembayaran dan lakukan transaksi."
+      ]
+    },
+    {
+      "bank": "Bank Muamalat",
+      "method": "VIA TELLER DI KANTOR CABANG/KAS/KAS PEMBANTU",
+      "steps": [
+        "Melalui teller di jaringan Bank Muamalat di seluruh Indonesia dengan menyerahkan Nomor Tagihan pembayaran formulir."
+      ]
+    },
+    {
+      "bank": "Bank Muamalat",
+      "method": "VIA ATM BANK MUAMALAT",
+      "steps": [
+        "Untuk pembayaran melalui ATM Bank Muamalat pilih menu Pembayaran → Virtual Account → Ketik 9090 + Dua Digit Awal Nomor Tagihan + Nomor Tagihan → Nominal Pembayaran .",
+        "Untuk pembayaran melalui ATM Bank lain (ATM Bersama dan Prima) pilih menu Transfer Bank Lain → Masukkan Kode Bank dan nomor rekening (147 9090 + Dua Digit Awal Nomor Tagihan + Nomor Tagihan ) → Nominal Pembayaran."
+      ]
+    },
+    {
+      "bank": "Bank Muamalat",
+      "method": "VIA INTERNET/MOBILE BANKING",
+      "steps": [
+        "Untuk pembayaran melalui Mobile Banking Bank Muamalat pilih menu Pembayaran → Virtual Account → Ketik 9090 + Dua Digit Awal Nomor Tagihan + Nomor Tagihan → Nominal Pembayaran ."
+      ]
+    }
+  ],
+  "pdf_guides": [
+    {
+      "bank": "Bank Syariah Nasional (BSN)",
+      "method": "Petunjuk Pembayaran PDF",
+      "pdf_link": "[Petunjuk Pembayaran BSN PDF](D:/Kuliah/Semester 6/TrenTop/UAS/data/pembayaran/pdf_guides/Petunjuk-Pembayaran-Bank-Syariah-Nasional-BSN.pdf)",
+      "note": "Panduan lengkap pembayaran melalui Bank Syariah Nasional terlampir pada tautan dokumen PDF di atas."
+    },
+    {
+      "bank": "Bank BCA Syariah",
+      "method": "Panduan Transfer Virtual Account (VA) PDF",
+      "pdf_link": "[Panduan Transfer VA BCA Syariah PDF](D:/Kuliah/Semester 6/TrenTop/UAS/data/pembayaran/pdf_guides/Panduan-Transfer-VA-UII-BCA-Syariah.pdf)",
+      "note": "Panduan lengkap pembayaran melalui Bank BCA Syariah terlampir pada tautan dokumen PDF di atas."
+    }
+  ]
+}

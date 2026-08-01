@@ -1,0 +1,722 @@
+[
+  {
+    "prodi_name": "Akuntansi",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 18000000.0,
+      "Peringkat 3": 21000000.0,
+      "Peringkat 4": 23000000.0,
+      "Peringkat 5": 25000000.0,
+      "Peringkat 6": 27000000.0
+    },
+    "cost_per_quarter": 7400000.0,
+    "total_biaya_estimasi": 118400000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Analisis Keuangan",
+    "jenjang": "D4",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 7750000.0,
+      "Peringkat 3": 8250000.0,
+      "Peringkat 4": 8750000.0,
+      "Peringkat 5": 9250000.0,
+      "Peringkat 6": 10250000.0
+    },
+    "cost_per_quarter": 4200000.0,
+    "total_biaya_estimasi": 67200000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Akuntansi Perpajakan",
+    "jenjang": "D4",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 9000000.0,
+      "Peringkat 3": 10000000.0,
+      "Peringkat 4": 11000000.0,
+      "Peringkat 5": 12000000.0,
+      "Peringkat 6": 13000000.0
+    },
+    "cost_per_quarter": 4500000.0,
+    "total_biaya_estimasi": 72000000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Arsitektur",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 15000000.0,
+      "Peringkat 3": 25000000.0,
+      "Peringkat 4": 35000000.0,
+      "Peringkat 5": 40000000.0,
+      "Peringkat 6": 50000000.0
+    },
+    "cost_per_quarter": 8550000.0,
+    "total_biaya_estimasi": 136800000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Analis Kimia",
+    "jenjang": "D3",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 3000000.0,
+      "Peringkat 3": 4000000.0,
+      "Peringkat 4": 5000000.0,
+      "Peringkat 5": 7000000.0,
+      "Peringkat 6": 8000000.0
+    },
+    "cost_per_quarter": 3450000.0,
+    "total_biaya_estimasi": 41400000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Bisnis Digital",
+    "jenjang": "D4",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 11000000.0,
+      "Peringkat 3": 12000000.0,
+      "Peringkat 4": 13000000.0,
+      "Peringkat 5": 14000000.0,
+      "Peringkat 6": 15000000.0
+    },
+    "cost_per_quarter": 4250000.0,
+    "total_biaya_estimasi": 68000000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Ekonomi Islam",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 3500000.0,
+      "Peringkat 2": 4500000.0,
+      "Peringkat 3": 5500000.0,
+      "Peringkat 4": 6500000.0,
+      "Peringkat 5": 7500000.0,
+      "Peringkat 6": 8500000.0
+    },
+    "cost_per_quarter": 4550000.0,
+    "total_biaya_estimasi": 72800000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Ekonomi Pembangunan",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 10000000.0,
+      "Peringkat 3": 12000000.0,
+      "Peringkat 4": 15000000.0,
+      "Peringkat 5": 17000000.0,
+      "Peringkat 6": 18000000.0
+    },
+    "cost_per_quarter": 6650000.0,
+    "total_biaya_estimasi": 106400000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Farmasi",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 18000000.0,
+      "Peringkat 2": 20000000.0,
+      "Peringkat 3": 22000000.0,
+      "Peringkat 4": 24000000.0,
+      "Peringkat 5": 26000000.0,
+      "Peringkat 6": 28000000.0
+    },
+    "cost_per_quarter": 8800000.0,
+    "total_biaya_estimasi": 140800000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Ilmu Hukum",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 3000000.0,
+      "Peringkat 2": 14000000.0,
+      "Peringkat 3": 17000000.0,
+      "Peringkat 4": 20000000.0,
+      "Peringkat 5": 23000000.0,
+      "Peringkat 6": 30000000.0
+    },
+    "cost_per_quarter": 6450000.0,
+    "total_biaya_estimasi": 103200000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Hukum Bisnis",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 3000000.0,
+      "Peringkat 2": 14000000.0,
+      "Peringkat 3": 17000000.0,
+      "Peringkat 4": 20000000.0,
+      "Peringkat 5": 23000000.0,
+      "Peringkat 6": 30000000.0
+    },
+    "cost_per_quarter": 6200000.0,
+    "total_biaya_estimasi": 99200000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Hukum Keluarga",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 3000000.0,
+      "Peringkat 2": 3500000.0,
+      "Peringkat 3": 4000000.0,
+      "Peringkat 4": 4500000.0,
+      "Peringkat 5": 5000000.0,
+      "Peringkat 6": 5500000.0
+    },
+    "cost_per_quarter": 4550000.0,
+    "total_biaya_estimasi": 72800000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Hubungan Internasional",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 10000000.0,
+      "Peringkat 3": 12000000.0,
+      "Peringkat 4": 14000000.0,
+      "Peringkat 5": 16000000.0,
+      "Peringkat 6": 18000000.0
+    },
+    "cost_per_quarter": 5900000.0,
+    "total_biaya_estimasi": 94400000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Informatika",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 12000000.0,
+      "Peringkat 3": 17000000.0,
+      "Peringkat 4": 22000000.0,
+      "Peringkat 5": 26000000.0,
+      "Peringkat 6": 28000000.0
+    },
+    "cost_per_quarter": 7700000.0,
+    "total_biaya_estimasi": 123200000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Informatika (PJJ)",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 1000000.0,
+      "Peringkat 2": 1000000.0,
+      "Peringkat 3": 1000000.0,
+      "Peringkat 4": 1000000.0,
+      "Peringkat 5": 1000000.0,
+      "Peringkat 6": 1000000.0
+    },
+    "cost_per_quarter": 2000000.0,
+    "total_biaya_estimasi": 32000000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Ilmu Komunikasi",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 18000000.0,
+      "Peringkat 3": 19000000.0,
+      "Peringkat 4": 20000000.0,
+      "Peringkat 5": 21000000.0,
+      "Peringkat 6": 22000000.0
+    },
+    "cost_per_quarter": 6100000.0,
+    "total_biaya_estimasi": 97600000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Kedokteran",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 195000000.0,
+      "Peringkat 2": 220000000.0,
+      "Peringkat 3": 245000000.0,
+      "Peringkat 4": 270000000.0,
+      "Peringkat 5": 295000000.0,
+      "Peringkat 6": 320000000.0
+    },
+    "cost_per_quarter": 11700000.0,
+    "total_biaya_estimasi": 187200000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Kimia",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 2000000.0,
+      "Peringkat 3": 4000000.0,
+      "Peringkat 4": 6000000.0,
+      "Peringkat 5": 8000000.0,
+      "Peringkat 6": 10000000.0
+    },
+    "cost_per_quarter": 7000000.0,
+    "total_biaya_estimasi": 112000000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Manajemen",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 18000000.0,
+      "Peringkat 3": 21000000.0,
+      "Peringkat 4": 24000000.0,
+      "Peringkat 5": 26000000.0,
+      "Peringkat 6": 28000000.0
+    },
+    "cost_per_quarter": 7100000.0,
+    "total_biaya_estimasi": 113600000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Manajemen Rekayasa",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 1000000.0,
+      "Peringkat 2": 2000000.0,
+      "Peringkat 3": 3500000.0,
+      "Peringkat 4": 5000000.0,
+      "Peringkat 5": 6000000.0,
+      "Peringkat 6": 10000000.0
+    },
+    "cost_per_quarter": 6750000.0,
+    "total_biaya_estimasi": 108000000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Pendidikan Agama Islam",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 4000000.0,
+      "Peringkat 2": 4750000.0,
+      "Peringkat 3": 5500000.0,
+      "Peringkat 4": 6250000.0,
+      "Peringkat 5": 7000000.0,
+      "Peringkat 6": 7750000.0
+    },
+    "cost_per_quarter": 4550000.0,
+    "total_biaya_estimasi": 72800000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Pendidikan Bahasa Inggris",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 6000000.0,
+      "Peringkat 2": 7500000.0,
+      "Peringkat 3": 9000000.0,
+      "Peringkat 4": 11000000.0,
+      "Peringkat 5": 17000000.0,
+      "Peringkat 6": 22000000.0
+    },
+    "cost_per_quarter": 5850000.0,
+    "total_biaya_estimasi": 93600000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Pendidikan Kimia",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 3000000.0,
+      "Peringkat 3": 3500000.0,
+      "Peringkat 4": 4000000.0,
+      "Peringkat 5": 4500000.0,
+      "Peringkat 6": 5000000.0
+    },
+    "cost_per_quarter": 5950000.0,
+    "total_biaya_estimasi": 95200000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Psikologi",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 21000000.0,
+      "Peringkat 3": 23000000.0,
+      "Peringkat 4": 25000000.0,
+      "Peringkat 5": 27000000.0,
+      "Peringkat 6": 29000000.0
+    },
+    "cost_per_quarter": 6200000.0,
+    "total_biaya_estimasi": 99200000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Rekayasa Tekstil",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 2500000.0,
+      "Peringkat 2": 3500000.0,
+      "Peringkat 3": 4500000.0,
+      "Peringkat 4": 5500000.0,
+      "Peringkat 5": 0.0,
+      "Peringkat 6": 0.0
+    },
+    "cost_per_quarter": 6500000.0,
+    "total_biaya_estimasi": 104000000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Statistika",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 8000000.0,
+      "Peringkat 2": 11000000.0,
+      "Peringkat 3": 15000000.0,
+      "Peringkat 4": 18000000.0,
+      "Peringkat 5": 22000000.0,
+      "Peringkat 6": 25000000.0
+    },
+    "cost_per_quarter": 6400000.0,
+    "total_biaya_estimasi": 102400000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Teknik Industri",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 13000000.0,
+      "Peringkat 3": 18000000.0,
+      "Peringkat 4": 23000000.0,
+      "Peringkat 5": 28000000.0,
+      "Peringkat 6": 30000000.0
+    },
+    "cost_per_quarter": 7950000.0,
+    "total_biaya_estimasi": 127200000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Teknik Elektro",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 11000000.0,
+      "Peringkat 3": 16000000.0,
+      "Peringkat 4": 21000000.0,
+      "Peringkat 5": 25000000.0,
+      "Peringkat 6": 27000000.0
+    },
+    "cost_per_quarter": 7600000.0,
+    "total_biaya_estimasi": 121600000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Teknik Kimia",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 11000000.0,
+      "Peringkat 3": 16000000.0,
+      "Peringkat 4": 21000000.0,
+      "Peringkat 5": 25000000.0,
+      "Peringkat 6": 27000000.0
+    },
+    "cost_per_quarter": 7400000.0,
+    "total_biaya_estimasi": 118400000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Teknik Sipil",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 15000000.0,
+      "Peringkat 3": 25000000.0,
+      "Peringkat 4": 30000000.0,
+      "Peringkat 5": 35000000.0,
+      "Peringkat 6": 40000000.0
+    },
+    "cost_per_quarter": 8150000.0,
+    "total_biaya_estimasi": 130400000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Teknik Lingkungan",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 15000000.0,
+      "Peringkat 3": 25000000.0,
+      "Peringkat 4": 30000000.0,
+      "Peringkat 5": 35000000.0,
+      "Peringkat 6": 40000000.0
+    },
+    "cost_per_quarter": 8150000.0,
+    "total_biaya_estimasi": 130400000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Teknik Mesin",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 10000000.0,
+      "Peringkat 3": 17000000.0,
+      "Peringkat 4": 20000000.0,
+      "Peringkat 5": 22500000.0,
+      "Peringkat 6": 25000000.0
+    },
+    "cost_per_quarter": 7600000.0,
+    "total_biaya_estimasi": 121600000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Akuntansi IP",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 15000000.0,
+      "Peringkat 3": 18000000.0,
+      "Peringkat 4": 20000000.0,
+      "Peringkat 5": 22000000.0,
+      "Peringkat 6": 24000000.0
+    },
+    "cost_per_quarter": 11400000.0,
+    "total_biaya_estimasi": 182400000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Arsitektur IP",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 19000000.0,
+      "Peringkat 3": 25000000.0,
+      "Peringkat 4": 32500000.0,
+      "Peringkat 5": 40000000.0,
+      "Peringkat 6": 50000000.0
+    },
+    "cost_per_quarter": 11550000.0,
+    "total_biaya_estimasi": 184800000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Ekonomi Pembangunan IP",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 10000000.0,
+      "Peringkat 3": 12000000.0,
+      "Peringkat 4": 15000000.0,
+      "Peringkat 5": 16000000.0,
+      "Peringkat 6": 18000000.0
+    },
+    "cost_per_quarter": 10000000.0,
+    "total_biaya_estimasi": 160000000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Farmasi IP",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 18000000.0,
+      "Peringkat 2": 20000000.0,
+      "Peringkat 3": 22000000.0,
+      "Peringkat 4": 24000000.0,
+      "Peringkat 5": 26000000.0,
+      "Peringkat 6": 28000000.0
+    },
+    "cost_per_quarter": 11300000.0,
+    "total_biaya_estimasi": 180800000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Ilmu Hukum IP",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 3000000.0,
+      "Peringkat 2": 10000000.0,
+      "Peringkat 3": 15000000.0,
+      "Peringkat 4": 20000000.0,
+      "Peringkat 5": 25000000.0,
+      "Peringkat 6": 30000000.0
+    },
+    "cost_per_quarter": 8950000.0,
+    "total_biaya_estimasi": 143200000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Hukum Keluarga IP",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 3000000.0,
+      "Peringkat 2": 3500000.0,
+      "Peringkat 3": 4000000.0,
+      "Peringkat 4": 4500000.0,
+      "Peringkat 5": 5000000.0,
+      "Peringkat 6": 5500000.0
+    },
+    "cost_per_quarter": 5800000.0,
+    "total_biaya_estimasi": 92800000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Hubungan Internasional IP",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 10000000.0,
+      "Peringkat 3": 12000000.0,
+      "Peringkat 4": 14000000.0,
+      "Peringkat 5": 16000000.0,
+      "Peringkat 6": 18000000.0
+    },
+    "cost_per_quarter": 8400000.0,
+    "total_biaya_estimasi": 134400000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Informatika IP",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 12000000.0,
+      "Peringkat 3": 17000000.0,
+      "Peringkat 4": 22000000.0,
+      "Peringkat 5": 26000000.0,
+      "Peringkat 6": 28000000.0
+    },
+    "cost_per_quarter": 10200000.0,
+    "total_biaya_estimasi": 163200000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Ilmu Komunikasi IP",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 18000000.0,
+      "Peringkat 3": 19000000.0,
+      "Peringkat 4": 20000000.0,
+      "Peringkat 5": 21000000.0,
+      "Peringkat 6": 22000000.0
+    },
+    "cost_per_quarter": 7800000.0,
+    "total_biaya_estimasi": 124800000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Kimia IP",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 2000000.0,
+      "Peringkat 3": 4000000.0,
+      "Peringkat 4": 6000000.0,
+      "Peringkat 5": 8000000.0,
+      "Peringkat 6": 10000000.0
+    },
+    "cost_per_quarter": 6950000.0,
+    "total_biaya_estimasi": 111200000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Manajemen IP",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 18000000.0,
+      "Peringkat 3": 21000000.0,
+      "Peringkat 4": 24000000.0,
+      "Peringkat 5": 26000000.0,
+      "Peringkat 6": 28000000.0
+    },
+    "cost_per_quarter": 11600000.0,
+    "total_biaya_estimasi": 185600000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Statistika IP",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 8000000.0,
+      "Peringkat 2": 11000000.0,
+      "Peringkat 3": 15000000.0,
+      "Peringkat 4": 18000000.0,
+      "Peringkat 5": 22000000.0,
+      "Peringkat 6": 25000000.0
+    },
+    "cost_per_quarter": 8250000.0,
+    "total_biaya_estimasi": 132000000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Teknik Industri IP",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 13000000.0,
+      "Peringkat 3": 18000000.0,
+      "Peringkat 4": 23000000.0,
+      "Peringkat 5": 28000000.0,
+      "Peringkat 6": 30000000.0
+    },
+    "cost_per_quarter": 12200000.0,
+    "total_biaya_estimasi": 195200000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Teknik Elektro IP",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 11000000.0,
+      "Peringkat 3": 16000000.0,
+      "Peringkat 4": 21000000.0,
+      "Peringkat 5": 25000000.0,
+      "Peringkat 6": 27000000.0
+    },
+    "cost_per_quarter": 9900000.0,
+    "total_biaya_estimasi": 158400000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Teknik Kimia IP",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 11000000.0,
+      "Peringkat 3": 16000000.0,
+      "Peringkat 4": 21000000.0,
+      "Peringkat 5": 25000000.0,
+      "Peringkat 6": 27000000.0
+    },
+    "cost_per_quarter": 9900000.0,
+    "total_biaya_estimasi": 158400000.0,
+    "currency": "IDR"
+  },
+  {
+    "prodi_name": "Teknik Sipil IP",
+    "jenjang": "S1",
+    "uka_rankings": {
+      "Peringkat 1": 0.0,
+      "Peringkat 2": 15000000.0,
+      "Peringkat 3": 25000000.0,
+      "Peringkat 4": 30000000.0,
+      "Peringkat 5": 35000000.0,
+      "Peringkat 6": 40000000.0
+    },
+    "cost_per_quarter": 10100000.0,
+    "total_biaya_estimasi": 161600000.0,
+    "currency": "IDR"
+  }
+]

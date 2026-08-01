@@ -1,0 +1,42 @@
+{
+  "architecture": "AI Dense Vector Embedding & Hybrid Vector Retrieval Engine",
+  "total_chunks_indexed": 603,
+  "embedding_model": "indobenchmark/indobert-base-p1 (768 dimensions)",
+  "sparse_vectorizer": "TF-IDF Log-Sublinear (1200 features)",
+  "winning_engine": "Sparse TF-IDF Vector",
+  "best_mrr": 1.0,
+  "best_precision_at_3_percent": 93.33,
+  "benchmark_summary": {
+    "Dense IndoBERT Vector": {
+      "Precision@1": 0.9,
+      "Precision@3": 0.8667,
+      "Precision@5": 0.88,
+      "Recall@3": 0.0283,
+      "HitRate@3": 0.9,
+      "MRR": 0.9,
+      "Latency_ms": 39.3
+    },
+    "Sparse TF-IDF Vector": {
+      "Precision@1": 1.0,
+      "Precision@3": 0.9333,
+      "Precision@5": 0.92,
+      "Recall@3": 0.0314,
+      "HitRate@3": 1.0,
+      "MRR": 1.0,
+      "Latency_ms": 2.4
+    },
+    "Hybrid Fusion Engine": {
+      "Precision@1": 1.0,
+      "Precision@3": 0.9333,
+      "Precision@5": 0.92,
+      "Recall@3": 0.0314,
+      "HitRate@3": 1.0,
+      "MRR": 1.0,
+      "Latency_ms": 0.25
+    }
+  },
+  "generated_figures": [
+    "D:\\Kuliah\\Semester 6\\TrenTop\\UAS\\outputs\\figures\\04_ai_vector_similarity_matrix.png",
+    "D:\\Kuliah\\Semester 6\\TrenTop\\UAS\\outputs\\figures\\05_ai_model_comparative_benchmark.png"
+  ]
+}

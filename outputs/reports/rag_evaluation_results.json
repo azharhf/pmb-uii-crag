@@ -1,0 +1,305 @@
+{
+  "architecture": "4-Tier Corrective RAG (CRAG) System with Gemini Multi-Node Integration",
+  "gemini_api_nodes": {
+    "node_a_evaluator": "Gemini 2.5 Flash (LLM-as-a-Judge Relevance Evaluator)",
+    "node_b_rewriter": "Gemini 2.5 Flash (Query Rewriter & HyDE Expansion)",
+    "node_c_generator": "Gemini 2.5 Flash (Grounded Response Generator with Citations)"
+  },
+  "knowledge_base_size": 603,
+  "total_test_queries": 6,
+  "average_relevance_score_percent": 71.19,
+  "average_total_latency_ms": 10169.59,
+  "decision_path_distribution": {
+    "DIRECT PASS + RERANKER": 4,
+    "MULTI-QUERY + HyDE + RERANKER": 1,
+    "GUARDRAIL FALLBACK": 1
+  },
+  "test_results": [
+    {
+      "query_id": "Q1",
+      "expected_type": "High Relevance",
+      "result": {
+        "query": "Apa saja pilihan jalur seleksi pendaftaran mahasiswa baru di UII?",
+        "effective_query": "Apa saja pilihan jalur seleksi pendaftaran mahasiswa baru di UII?",
+        "decision_path": "DIRECT PASS + RERANKER",
+        "relevance_eval_label": "HIGH RELEVANCE",
+        "top_relevance_score": 0.8151,
+        "rewritten_query": null,
+        "answer": "### Pilihan Jalur Seleksi Penerimaan Mahasiswa Baru UII\n\nBerdasarkan informasi resmi Penerimaan Mahasiswa Baru (PMB) Universitas Islam Indonesia (UII), berikut adalah pilihan jalur seleksi pendaftaran yang dapat diikuti oleh calon mahasiswa baru:\n\n1. **Jalur TKA-UTBK (Submit Skor)**\n   Jalur seleksi ini merupakan mekanisme penerimaan calon mahasiswa baru yang berbasis pada unggah dan penilaian skor resmi Tes Kemampuan Akademik (TKA) atau Ujian Tulis Berbasis Komputer (UTBK).\n   - **Pendaftaran Online**: Calon mahasiswa melakukan pendaftaran dan memilih Jalur TKA-UTBK pada sistem Admisi UII.\n   - **Unggah Dokumen Skor**: Peserta mengunggah bukti skor resmi TKA atau UTBK sesuai dengan ketentuan yang berlaku.\n   - **Verifikasi dan Validasi**: Tim Admisi UII melakukan verifikasi keabsahan serta kesesualian dokumen yang telah diunggah.\n   - **Penilaian dan Pemeringkatan**: Proses seleksi dilaksanakan berdasarkan hasil skor TKA atau UTBK, pilihan program studi, dan daya tampung yang tersedia.\n   - **Pengumuman Hasil Seleksi**: Peserta yang memenuhi kriteria kelulusan dinyatakan lulus dan berhak melanjutkan ke tahapan daftar ulang.\n\n2. **Jalur Tes**\n   Jalur seleksi berbasis tes tertulis/ujian masuk UII.\n   - **Ketentuan Pilihan Program Studi**: Peserta dapat memilih maksimum 3 (tiga) pilihan program studi yang berbeda dalam satu kali pelaksanaan tes sesuai dengan formulir yang dibeli.\n   - **Ketentuan Perubahan Program Studi**: \n     - Apabila formulir pendaftaran belum dibayarkan, calon mahasiswa dapat mengabaikan formulir tersebut dan melakukan pembelian formulir baru pada sistem admisi.uii.ac.id dengan memilih program studi yang sesuai.\n     - Apabila formulir pendaftaran sudah dibayarkan, calon mahasiswa dapat menghubungi petugas Jalur Tes untuk mengubah pilihan program studi sebelum mencetak kartu ujian dan memulai tes.\n\n---\n\n### Informasi Kontak dan Layanan PMB UII\n\nApabila Anda memerlukan konsultasi atau informasi lebih lanjut terkait pendaftaran mahasiswa baru, silakan menghubungi layanan informasi resmi PMB Universitas Islam Indonesia melalui kanal berikut:\n\n- **Alamat Kantor**: Kantor Penerimaan Mahasiswa Baru, Gedung Muhammad Adnan (D4 Ekonomi), Kampus Terpadu Universitas Islam Indonesia, Jl. Kaliurang km. 14,5 Sleman, Yogyakarta 55584\n- **Email**: admisi@uii.ac.id\n- **Telepon**: 0274-898444 EXT 1234\n- **WhatsApp UII**: +62 811-2608-844\n- **Situs Web Resmi**: uii.ac.id\n- **Situs Web PMB**: pmb.uii.ac.id",
+        "citations": [
+          {
+            "rank": 1,
+            "doc_id": "DOC-468",
+            "module": "FAQ",
+            "section_title": "Pertanyaan Mengganti pilihan program studi sesaat sebelum Jalur Tes",
+            "relevance_score": "81.5%",
+            "raw_text": "Pertanyaan Mengganti pilihan program studi sesaat sebelum Jalur Tes\n**Jawaban**: Pertanyaan: Bagaimana cara mengganti pilihan program studi yang telah saya pilih? Jawaban: Abaikan formulir pendaftaran jika Anda belum melakukan pembayaran, kemudian lakukan pembelian formulir kembali pada laman admisi.uii.ac.id dan pastikan program studi yang Anda pilih telah sesuai. Jika formulir pendaftaran telah terbayar, Silakan hubungi petugas Jalur Tes untuk dapat mengganti pilihan program studi sebelum Anda cetak kartu ujian dan memulai tes Jalur Tes."
+          },
+          {
+            "rank": 2,
+            "doc_id": "DOC-540",
+            "module": "JALUR_RAPOR",
+            "section_title": "Mekanisme Seleksi Jalur TKA UTBK Submit Skor",
+            "relevance_score": "77.8%",
+            "raw_text": "Mekanisme Seleksi Jalur TKA UTBK Submit Skor\n- Pendaftaran Online Calon mahasiswa memilih Jalur TKA-UTBK pada sistem Admisi UII.\n- Unggah Dokumen Skor TKA-UTBK Peserta mengunggah skor resmi TKA atau UTBK sesuai ketentuan yang berlaku.\n- Verifikasi dan Validasi Admisi UII melakukan verifikasi keabsahan dan kesesuaian dokumen.\n- Penilaian dan Pemeringkatan Seleksi dilakukan berdasarkan skor TKA atau UTBK, pilihan program studi, dan daya tampung.\n- Pengumuman Hasil Seleksi Peserta yang memenuhi kriteria dinyatakan lulus dan berhak melakukan daftar ulang."
+          },
+          {
+            "rank": 3,
+            "doc_id": "DOC-132",
+            "module": "BROSUR",
+            "section_title": "BROSUR FAKULTAS HUKUM FH UII - Penerimaan Mahasiswa Baru Universitas Islam Indonesia",
+            "relevance_score": "75.8%",
+            "raw_text": "BROSUR FAKULTAS HUKUM FH UII - Penerimaan Mahasiswa Baru Universitas Islam Indonesia\n* **Alamat Kantor**: Kantor Penerimaan Mahasiswa Baru, Gedung Muhammad Adnan (D4 Ekonomi), Kampus Terpadu Universitas Islam Indonesia, Jl. Kaliurang km. 14,5 Sleman, Yogyakarta 55584\n* **Email**: admisi@uii.ac.id\n* **Telepon (Tanya PMB)**: 0274-898444 EXT 1234\n* **WhatsApp UII**: +62 811-2608-844\n* **Situs Web Resmi**: uii.ac.id\n* **Situs Web PMB**: pmb.uii.ac.id"
+          },
+          {
+            "rank": 4,
+            "doc_id": "DOC-465",
+            "module": "FAQ",
+            "section_title": "Pertanyaan Jumlah pilihan program studi dalam sekali Jalur Tes",
+            "relevance_score": "75.0%",
+            "raw_text": "Pertanyaan Jumlah pilihan program studi dalam sekali Jalur Tes\n**Jawaban**: Pertanyaan: Berapa banyak program studi yang dapat saya pilih untuk satu kali tes Jalur Tes? Jawaban: Anda dapat memilih maksimum 3 (tiga) pilihan program studi yang berbeda pada satu kali tes Jalur Tes sesuai dengan formulir yang dibeli."
+          },
+          {
+            "rank": 5,
+            "doc_id": "DOC-276",
+            "module": "BROSUR",
+            "section_title": "BROSUR FAKULTAS ILMU AGAMA ISLAM FIAI UII - Informasi Penerimaan Mahasiswa Baru PMB",
+            "relevance_score": "75.0%",
+            "raw_text": "BROSUR FAKULTAS ILMU AGAMA ISLAM FIAI UII - Informasi Penerimaan Mahasiswa Baru PMB"
+          }
+        ],
+        "suggested_followup": "Kapan batas waktu penutupan pendaftaran jalur seleksi ini?",
+        "total_latency_ms": 14064.65
+      }
+    },
+    {
+      "query_id": "Q2",
+      "expected_type": "High Relevance",
+      "result": {
+        "query": "Berapa rincian tarif biaya studi Catur Darma dan SPP di Universitas Islam Indonesia?",
+        "effective_query": "Berapa rincian tarif biaya studi Catur Darma dan SPP di Universitas Islam Indonesia?",
+        "decision_path": "DIRECT PASS + RERANKER",
+        "relevance_eval_label": "HIGH RELEVANCE",
+        "top_relevance_score": 0.9589,
+        "rewritten_query": null,
+        "answer": "Selamat datang di Layanan Informasi Resmi Penerimaan Mahasiswa Baru (PMB) Universitas Islam Indonesia (UII) Tahun Akademik 2026/2027.\n\nSistem pembiayaan studi di Universitas Islam Indonesia terdiri dari dua komponen utama, yaitu Uang Kuliah Awal (UKA) atau yang dikenal sebagai Dana Catur Darma, serta Uang Kuliah Kuartal (UKK) yang merupakan Sumbangan Pembinaan Pendidikan (SPP).\n\n### Komponen Pembiayaan Studi UII\n\nPembiayaan pendidikan di Universitas Islam Indonesia dikelompokkan ke dalam dua jenis biaya berikut:\n\n- **Uang Kuliah Awal (UKA) / Dana Catur Darma**: Biaya investasi pendidikan yang dibayarkan satu kali selama masa studi pada saat pertama kali diterima sebagai mahasiswa baru. Besaran nominal UKA ditentukan secara bertingkat berdasarkan hasil kelulusan seleksi calon mahasiswa, yang terbagi ke dalam Peringkat 1 hingga Peringkat 6. Semakin baik hasil/peringkat seleksi yang diperoleh, maka nominal Dana Catur Darma yang dibayarkan akan berada pada kelompok peringkat yang lebih rendah (Peringkat 1 merupakan tarif terendah).\n- **Uang Kuliah Kuartal (UKK) / SPP**: Biaya penyelenggaraan pendidikan rutin yang dibayarkan pada setiap kuartal/semester. UKK mencakup komponen SPP Tetap dan SPP Variabel (tergantung pada beban satuan kredit semester atau SKS yang diambil mahasiswa pada periode berjalan).\n\n### Ketentuan Peringkat Seleksi Catur Darma (UKA)\n\nPenetapan tarif Dana Catur Darma disesuaikan dengan performa seleksi masuk calon mahasiswa melalui skema peringkat berikut:\n\n1. **Peringkat 1**: Peringkat seleksi tertinggi dengan tarif UKA terendah.\n2. **Peringkat 2**: Tarif UKA tingkat kedua.\n3. **Peringkat 3**: Tarif UKA tingkat ketiga.\n4. **Peringkat 4**: Tarif UKA tingkat keempat.\n5. **Peringkat 5**: Tarif UKA tingkat kelima.\n6. **Peringkat 6**: Tarif UKA tingkat kelimabelas/tertinggi.\n\n### Variasi Biaya Berdasarkan Program Studi dan Jenjang\n\nNominal lengkap tarif Catur Darma dan SPP berbeda-beda sesuai dengan program studi serta jenjang pendidikan yang dipilih, yaitu:\n\n- Program Diploma (D3)\n- Program Sarjana Terapan (D4)\n- Program Sarjana (S1) Reguler\n- Program Sarjana (S1) International Program (IP)\n\nUntuk mengetahui rincian nominal tarif biaya studi Catur Darma dan SPP secara spesifik pada program studi pilihan Anda, silakan menyampaikan nama program studi secara spesifik agar informasi tarif dapat diberikan dengan tepat.",
+        "citations": [
+          {
+            "rank": 1,
+            "doc_id": "DOC-364",
+            "module": "BROSUR",
+            "section_title": "BROSUR FAKULTAS PSIKOLOGI DAN ILMU SOSIAL BUDAYA FPSB UII - PROGRAM STUDI UNIVERSITAS ISLAM INDONESIA UII",
+            "relevance_score": "95.9%",
+            "raw_text": "BROSUR FAKULTAS PSIKOLOGI DAN ILMU SOSIAL BUDAYA FPSB UII - PROGRAM STUDI UNIVERSITAS ISLAM INDONESIA UII"
+          },
+          {
+            "rank": 2,
+            "doc_id": "DOC-105",
+            "module": "BROSUR",
+            "section_title": "BROSUR UTAMA PMB UNIVERSITAS ISLAM INDONESIA TA 2026 2027 - Pilihan Program Studi",
+            "relevance_score": "87.2%",
+            "raw_text": "BROSUR UTAMA PMB UNIVERSITAS ISLAM INDONESIA TA 2026 2027 - Pilihan Program Studi\nUII menawarkan 1 program Diploma (D3), 3 program Sarjana Terapan (D4) 28 program Sarjana (S1) Reguler dan 16 program Sarjana (S1) Program Internasional (IP)"
+          },
+          {
+            "rank": 3,
+            "doc_id": "DOC-224",
+            "module": "BROSUR",
+            "section_title": "BROSUR FAKULTAS TEKNOLOGI INDUSTRI FTI UII - PROGRAM STUDI INFORMATIKA UNIVERSITAS ISLAM INDONESIA",
+            "relevance_score": "87.2%",
+            "raw_text": "BROSUR FAKULTAS TEKNOLOGI INDUSTRI FTI UII - PROGRAM STUDI INFORMATIKA UNIVERSITAS ISLAM INDONESIA"
+          },
+          {
+            "rank": 4,
+            "doc_id": "DOC-092",
+            "module": "BROSUR",
+            "section_title": "BROSUR UTAMA PMB UNIVERSITAS ISLAM INDONESIA TA 2026 2027 - Jenjang Program Studi yang Dibuka",
+            "relevance_score": "86.7%",
+            "raw_text": "BROSUR UTAMA PMB UNIVERSITAS ISLAM INDONESIA TA 2026 2027 - Jenjang Program Studi yang Dibuka\n- Program Diploma (D3)\n- Program Sarjana Terapan (D4)\n- Program Sarjana (S1)"
+          },
+          {
+            "rank": 5,
+            "doc_id": "DOC-101",
+            "module": "BROSUR",
+            "section_title": "BROSUR UTAMA PMB UNIVERSITAS ISLAM INDONESIA TA 2026 2027 - Jadi Mahasiswa International Program dan Dapatkan Keuntungannya",
+            "relevance_score": "86.6%",
+            "raw_text": "BROSUR UTAMA PMB UNIVERSITAS ISLAM INDONESIA TA 2026 2027 - Jadi Mahasiswa International Program dan Dapatkan Keuntungannya"
+          }
+        ],
+        "suggested_followup": "Bagaimana mekanisme skema angsuran pembayaran biaya studi di UII?",
+        "total_latency_ms": 10910.81
+      }
+    },
+    {
+      "query_id": "Q3",
+      "expected_type": "High Relevance",
+      "result": {
+        "query": "Apa saja syarat pendaftaran dan fasilitas Beasiswa Hafiz Al-Qur'an?",
+        "effective_query": "Apa saja syarat pendaftaran dan fasilitas Beasiswa Hafiz Al-Qur'an?",
+        "decision_path": "DIRECT PASS + RERANKER",
+        "relevance_eval_label": "HIGH RELEVANCE",
+        "top_relevance_score": 0.8312,
+        "rewritten_query": null,
+        "answer": "### Ketentuan dan Syarat Pendaftaran Beasiswa Hafizah Hafiz UII\n\nBerikut adalah informasi mengenai syarat pendaftaran, alur verifikasi berkas, dan fasilitas terkait Beasiswa Hafizah Hafiz berdasarkan dokumen resmi Penerimaan Mahasiswa Baru (PMB) Universitas Islam Indonesia (UII):\n\n### Syarat Utama Pendaftaran\n\n- **Jalur Seleksi Khusus**: Seleksi Beasiswa Hafizah Hafiz hanya diperuntukkan bagi calon mahasiswa yang mendaftar sejak awal melalui **Jalur Beasiswa**.\n- **Ketentuan Jalur Non-Beasiswa**: Apabila Anda mendaftar dan dinyatakan diterima melalui jalur seleksi lain (seperti Jalur Tes atau Jalur Rapor), Anda **tidak dapat** mengikuti seleksi Beasiswa Hafizah Hafiz.\n\n### Pengecekan Status Berkas Pendaftaran\n\n- **Pengecekan Berkas**: Calon mahasiswa dapat memantau status pemrosesan berkas pendaftaran Jalur Beasiswa secara berkala melalui laman resmi `admisi.uii.ac.id` pada menu **Pendaftaran** dan sub-menu **Jalur Beasiswa**.\n- **Situs Resmi PMB**: Seluruh informasi dan pembaruan pendaftaran dapat diakses melalui portal resmi pmb.uii.ac.id.\n\n### Fasilitas Beasiswa\n\n- **Dukungan Beasiswa Internal**: UII menyediakan berbagai skema beasiswa internal (termasuk Jalur Beasiswa Hafizah Hafiz) dan beasiswa eksternal untuk mendukung kelancaran studi mahasiswa. \n\nJika Anda membutuhkan informasi lebih lanjut mengenai jadwal gelombang seleksi dan detail persyaratan teknis pendaftaran Jalur Beasiswa, Anda dapat mengunjungi portal resmi PMB UII di `pmb.uii.ac.id` atau mengakses akun pendaftaran Anda di `admisi.uii.ac.id`.",
+        "citations": [
+          {
+            "rank": 1,
+            "doc_id": "DOC-494",
+            "module": "FAQ",
+            "section_title": "Pertanyaan Beasiswa Hafizah Hafiz",
+            "relevance_score": "83.1%",
+            "raw_text": "Pertanyaan Beasiswa Hafizah Hafiz\n**Jawaban**: Pertanyaan: Saya ingin mendaftar seleksi Beasiswa Hafizah Hafiz tapi saya tidak mengikuti seleksi Jalur Beasiswa, namun saya diterima melalui jalur seleksi lainnya (Jalur Tes/Jalur Rapor). Apakah bisa ikut seleksi beasiswa Hafizah Hafiz? Jawaban: Seleksi Beasiswa Hafiz Hafiz hanya diperuntukkan untuk calon mahasiswa yang mendaftar melalui seleksi Jalur Beasiswa."
+          },
+          {
+            "rank": 2,
+            "doc_id": "DOC-363",
+            "module": "BROSUR",
+            "section_title": "BROSUR FAKULTAS PSIKOLOGI DAN ILMU SOSIAL BUDAYA FPSB UII - Informasi Pendaftaran",
+            "relevance_score": "72.0%",
+            "raw_text": "BROSUR FAKULTAS PSIKOLOGI DAN ILMU SOSIAL BUDAYA FPSB UII - Informasi Pendaftaran\n- **Website PMB**: pmb.uii.ac.id"
+          },
+          {
+            "rank": 3,
+            "doc_id": "DOC-285",
+            "module": "BROSUR",
+            "section_title": "BROSUR FAKULTAS MATEMATIKA DAN ILMU PENGETAHUAN ALAM FMIPA UII - Informasi Pendaftaran",
+            "relevance_score": "71.8%",
+            "raw_text": "BROSUR FAKULTAS MATEMATIKA DAN ILMU PENGETAHUAN ALAM FMIPA UII - Informasi Pendaftaran\n- **Website PMB**: pmb.uii.ac.id"
+          },
+          {
+            "rank": 4,
+            "doc_id": "DOC-474",
+            "module": "FAQ",
+            "section_title": "Pertanyaan Cara mengetahui berkas Jalur Beasiswa telah diproses",
+            "relevance_score": "69.3%",
+            "raw_text": "Pertanyaan Cara mengetahui berkas Jalur Beasiswa telah diproses\n**Jawaban**: Pertanyaan: Bagaimana cara mengetahui berkas Jalur Beasiswa saya telah sampai dan diproses? Jawaban: Anda dapat mengecek status berkas Anda pada laman admisi.uii.ac.id pada menu Pendaftaran dan sub menu Jalur Beasiswa."
+          },
+          {
+            "rank": 5,
+            "doc_id": "DOC-198",
+            "module": "BROSUR",
+            "section_title": "BROSUR FAKULTAS BISNIS DAN EKONOMIKA FBE UII - Fasilitas",
+            "relevance_score": "68.0%",
+            "raw_text": "BROSUR FAKULTAS BISNIS DAN EKONOMIKA FBE UII - Fasilitas\nLaboratorium Bank Mini, Laboratorium Pembiayaan, Laboratorium Investasi (Pasar Modal), Laboratorium lainnya, serta tersedianya berbagai macam beasiswa, baik internal maupun eksternal."
+          }
+        ],
+        "suggested_followup": "Berapa minimal hafalan Al-Qur'an untuk pendaftaran Jalur Beasiswa Hafiz?",
+        "total_latency_ms": 13617.94
+      }
+    },
+    {
+      "query_id": "Q4",
+      "expected_type": "Ambiguous / Vague",
+      "result": {
+        "query": "gimana cara bayar?",
+        "effective_query": "gimana cara bayar?",
+        "decision_path": "MULTI-QUERY + HyDE + RERANKER",
+        "relevance_eval_label": "MEDIUM AMBIGUOUS",
+        "top_relevance_score": 0.9062,
+        "rewritten_query": "gimana cara bayar? rincian tarif biaya spp catur darma jalur pendaftaran syaratalur pmb uii",
+        "answer": "### Informasi Akses Portal Pembayaran dan Pendaftaran UII 2026\n\nAssalamu’alaikum Warahmatullahi Wabarakatuh.\n\nTerima kasih telah menghubungi Layanan Informasi Penerimaan Mahasiswa Baru (PMB) Universitas Islam Indonesia (UII). \n\nProsedur pembayaran serta pengecekan status pendaftaran calon mahasiswa baru dapat dipantau dan dilakukan secara terintegrasi melalui portal pendaftaran resmi UII.\n\nBerikut adalah tautan resmi portal PMB UII yang dapat Anda akses:\n\n- **Portal Admisi UII**: `admisi.uii.ac.id`\n  Digunakan untuk melakukan login akun pendaftaran, mengakses tagihan, melakukan transaksi pendaftaran, serta memantau status berkas.\n- **Website PMB UII**: `pmb.uii.ac.id`\n  Layanan informasi umum mengenai pendaftaran dan panduan pendaftaran mahasiswa baru program Sarjana dan Diploma.\n- **Website PMB Pascasarjana**: `pmb.uii.ac.id/pascasarjana`\n  Layanan informasi pendaftaran khusus untuk Program Pascasarjana dan Profesi UII.\n\n---\n\n### Prosedur Mengecek Status Berkas dan Tagihan\n\nUntuk memantau status pendaftaran, verifikasi berkas, serta tagihan pembayaran yang berkaitan dengan jalur seleksi (termasuk Jalur Beasiswa), Anda dapat mengikuti langkah-langkah berikut:\n\n1. Akses laman resmi di `admisi.uii.ac.id`.\n2. Masuk (*login*) menggunakan akun pendaftaran yang telah Anda daftarkan.\n3. Masuk ke menu **Pendaftaran**.\n4. Pilih sub menu **Jalur Beasiswa** (atau jalur pendaftaran lain yang Anda ikuti) untuk melihat rincian instruksi pembayaran serta status pemrosesan berkas Anda.\n\nJika Anda memerlukan bantuan lebih lanjut mengenai petunjuk teknis pembayaran, silakan memeriksa pengumuman resmi yang tertera pada dashboard akun **admisi.uii.ac.id** Anda.\n\nWassalamu’alaikum Warahmatullahi Wabarakatuh.",
+        "citations": [
+          {
+            "rank": 1,
+            "doc_id": "DOC-474",
+            "module": "FAQ",
+            "section_title": "Pertanyaan Cara mengetahui berkas Jalur Beasiswa telah diproses",
+            "relevance_score": "69.4%",
+            "raw_text": "Pertanyaan Cara mengetahui berkas Jalur Beasiswa telah diproses\n**Jawaban**: Pertanyaan: Bagaimana cara mengetahui berkas Jalur Beasiswa saya telah sampai dan diproses? Jawaban: Anda dapat mengecek status berkas Anda pada laman admisi.uii.ac.id pada menu Pendaftaran dan sub menu Jalur Beasiswa."
+          },
+          {
+            "rank": 2,
+            "doc_id": "DOC-154",
+            "module": "BROSUR",
+            "section_title": "BROSUR FAKULTAS KEDOKTERAN FK UII - Informasi Pendaftaran dan Layanan PMB",
+            "relevance_score": "68.7%",
+            "raw_text": "BROSUR FAKULTAS KEDOKTERAN FK UII - Informasi Pendaftaran dan Layanan PMB\n- **Website PMB**: pmb.uii.ac.id"
+          },
+          {
+            "rank": 3,
+            "doc_id": "DOC-401",
+            "module": "BROSUR",
+            "section_title": "BROSUR PROGRAM PASCASARJANA PROFESI UII - INFORMASI PENDAFTARAN",
+            "relevance_score": "60.5%",
+            "raw_text": "BROSUR PROGRAM PASCASARJANA PROFESI UII - INFORMASI PENDAFTARAN\n- **Website PMB Pascasarjana**: pmb.uii.ac.id/pascasarjana"
+          }
+        ],
+        "suggested_followup": "Apa saja dokumen persyaratan yang harus disiapkan untuk pendaftaran?",
+        "total_latency_ms": 11401.6
+      }
+    },
+    {
+      "query_id": "Q5",
+      "expected_type": "Ambiguous / Vague",
+      "result": {
+        "query": "ada jurusan apa saja?",
+        "effective_query": "ada jurusan apa saja?",
+        "decision_path": "DIRECT PASS + RERANKER",
+        "relevance_eval_label": "HIGH RELEVANCE",
+        "top_relevance_score": 0.7101,
+        "rewritten_query": null,
+        "answer": "Selamat datang di layanan informasi Penerimaan Mahasiswa Baru (PMB) Universitas Islam Indonesia (UII) Tahun Akademik 2026.\n\nBerdasarkan informasi resmi yang tersedia, berikut adalah rincian program studi dan bidang keahlian di lingkungan Fakultas Teknologi Industri (FTI) UII serta ketentuan terkait pemilihan program studi:\n\n### Program Studi dan Pusat Studi (Fakultas Teknologi Industri)\n\n- **Program Studi Teknik Mesin**\n  - **Deskripsi**: Menyiapkan lulusan yang memiliki kemampuan analisis didukung keterampilan aplikatif sesuai kebutuhan industri. Memiliki konsentrasi Teknologi Manufaktur yang menjadikan institusi ini sebagai Jurusan Teknik Mesin Manufaktur pertama untuk wilayah DIY dan Jawa Tengah.\n  - **SK Pendirian**: Nomor 414/DIKTI/Kep/1999 (dibuka tahun akademik 1999/2000).\n\n- **Bidang Keahlian dan Pusat Studi Teknologi Informasi/Komputer (FTI UII)**\n  - **Pusat Studi**:\n    - Forensika Digital\n    - Informatika Medis\n    - Sains Data\n    - Sistem Informasi *Enterprise*\n  - **Prospek Kerja**: *Full Stack Developer*, *Mobile Developer*, *Cyber Security Analyst*, *Data Scientist*, *UX Researcher*, *Game Developer*, dan *Network Engineer*.\n  - **Fasilitas & Sertifikasi**: Dilengkapi 4 laboratorium dengan komputer bermerek mumpuni, serta pusat pelatihan bersertifikasi internasional (Cisco, Oracle, EC-Council, Adobe, dan MikroTik).\n\n---\n\n### Ketentuan Pemilihan Program Studi\n\nSistem pendaftaran PMB UII menerapkan aturan khusus dalam pemilihan program studi:\n\n1. **Kesesuaian Jurusan Sekolah**: Pilihan program studi tertentu yang dapat Anda pilih pada sistem admisi didasarkan pada jurusan/peminatan yang Anda tempuh semasa di SMA/SMK/MA (misalnya jurusan IPA). Jika pilihan prodi tertentu tidak muncul, hal tersebut dikarenakan adanya pembatasan latar belakang jurusan sekolah.\n2. **Seleksi Jalur Rapor**: Bagi pendaftar jalur rapor, seleksi dilakukan menggunakan nilai rapor 5 semester (baik Kurikulum Merdeka maupun Kurikulum Lama/IPA) yang akan melalui tahap seleksi administrasi nilai sebelum masuk ke tahap berikutnya.\n\nJika Anda membutuhkan rincian kriteria jurusan asal atau informasi syarat pendaftaran lebih lanjut, silakan sampaikan pertanyaan Anda.",
+        "citations": [
+          {
+            "rank": 1,
+            "doc_id": "DOC-476",
+            "module": "FAQ",
+            "section_title": "Pertanyaan Kurikulum sekolah terdiri dari semester saja",
+            "relevance_score": "71.0%",
+            "raw_text": "Pertanyaan Kurikulum sekolah terdiri dari semester saja\n**Jawaban**: Pertanyaan: Saya sekolah akselerasi, hanya memiliki 3 semester, yaitu semester A, B, dan C, bagaimana saya mengisi nilai rapor di admisi? Jawaban: Silakan semester 1 dan 2 diisi menggunakan nilai semester A. Semester 3 dan 4, diisi menggunakan nilai semester B. Semester 5 diisi menggunakan nilai semester C."
+          },
+          {
+            "rank": 2,
+            "doc_id": "DOC-530",
+            "module": "JALUR_RAPOR",
+            "section_title": "Tahapan Seleksi",
+            "relevance_score": "68.8%",
+            "raw_text": "Tahapan Seleksi\n- Penilaian dilakukan berdasarkan nilai rapor 5 semester .\n- Untuk kurikulum lama (bukan kurikulum merdeka) berasal dari jurusan IPA , menggunakan nilai rapor 7 mata pelajaran yaitu Agama, Matematika, Bahasa Indonesia, Bahasa Inggris, Biologi, Fisika, dan Kimia.\n- Untuk kurikulum merdeka , nilai rapor yang digunakan adalah 8 (delapan) nilai mata pelajaran dalam kurikulum merdeka, yaitu Pendidikan Agama dan Budi Pekerti, Pendidikan Pancasila, Bahasa Indonesia, Matematika, Bahasa Inggris, Pendidikan Jasmani, Olahraga dan Kesehatan (PJOK), Sejarah, Seni dan Budaya.\n- Peserta seleksi yang lolos dalam tahap 1 (seleksi rapor), akan mengikuti seleksi tahap 2 ."
+          },
+          {
+            "rank": 3,
+            "doc_id": "DOC-463",
+            "module": "FAQ",
+            "section_title": "Pertanyaan Pilihan program studi tertentu tidak muncul",
+            "relevance_score": "60.2%",
+            "raw_text": "Pertanyaan Pilihan program studi tertentu tidak muncul\n**Jawaban**: Pertanyaan: Mengapa saya tidak dapat memilih program studi tertentu? Jawaban: Terdapat ketentuan pemilihan program studi tertentu yang didasarkan pada jurusan yang diambil ketika SMA."
+          },
+          {
+            "rank": 4,
+            "doc_id": "DOC-227",
+            "module": "BROSUR",
+            "section_title": "BROSUR FAKULTAS TEKNOLOGI INDUSTRI FTI UII - Detail Informasi",
+            "relevance_score": "48.4%",
+            "raw_text": "BROSUR FAKULTAS TEKNOLOGI INDUSTRI FTI UII - Detail Informasi\n- **Prospek Kerja**: *Full Stack Developer*, *Mobile Developer*, *Cyber Security Analyst*, *Data Scientist*, *UX Researcher*, *Game Developer*, *Network Engineer*.\n- **Program Unggulan**: Memiliki 4 pusat studi yaitu Forensika Digital, Informatika Medis, Sains Data, dan Sistem Informasi *Enterprise*. Selain itu, jurusan ini juga memiliki pusat pelatihan dengan sertifikasi internasional dari Cisco, Oracle, EC-Council, Adobe, dan MikroTik.\n- **Fasilitas**: 4 laboratorium yang dilengkapi dengan laptop ataupun komputer dengan spesifikasi mumpuni yang dapat digunakan oleh mahasiswa pada saat kuliah ataupun praktikum di Lab. Selain itu, kelas yang nyaman dan kekinian diharapkan dapat membuat mahasiswa untuk betah belajar di Lab."
+          },
+          {
+            "rank": 5,
+            "doc_id": "DOC-222",
+            "module": "BROSUR",
+            "section_title": "BROSUR FAKULTAS TEKNOLOGI INDUSTRI FTI UII - Deskripsi Program Studi",
+            "relevance_score": "47.6%",
+            "raw_text": "BROSUR FAKULTAS TEKNOLOGI INDUSTRI FTI UII - Deskripsi Program Studi\nProgram Studi Teknik Mesin UII menyiapkan lulusan yang memiliki kemampuan analisis yang didukung oleh keterampilan aplikatif sesuai kebutuhan industri. Memiliki konsentrasi Teknologi Manufaktur, telah membawa institusi ini sebagai Jurusan Teknik Mesin Manufaktur pertama untuk wilayah DIY dan Jawa Tengah. Prodi ini dibuka pada tahun akademik 1999/2000 dengan Nomor SK Pendirian 414/DIKTI/Kep/1999 pada tanggal 22 September 1999."
+          }
+        ],
+        "suggested_followup": "Berapa tarif biaya Catur Darma dan SPP untuk program studi ini?",
+        "total_latency_ms": 10898.16
+      }
+    },
+    {
+      "query_id": "Q6",
+      "expected_type": "Out-of-Domain Guardrail Test",
+      "result": {
+        "query": "Bagaimana ramalan cuaca dan harga saham di Jakarta hari ini?",
+        "effective_query": "Bagaimana ramalan cuaca dan harga saham di Jakarta hari ini?",
+        "decision_path": "GUARDRAIL FALLBACK",
+        "relevance_eval_label": "LOW / ZERO RELEVANCE",
+        "top_relevance_score": 0.05,
+        "rewritten_query": null,
+        "answer": "**[GUARDRAIL NOTICE]** Pertanyaan Anda terdeteksi berada di luar domain Knowledge Base PMB UII 2026.\n\nSistem CRAG mencegah halusinasi jawaban. Silakan ajukan pertanyaan seputar:\n• **Jalur Seleksi**: CBT, UTBK, Rapor, Kedokteran\n• **Biaya Studi**: Catur Darma, SPP, Angsuran Bank\n• **Beasiswa**: Hafiz Al-Qur'an, Santri, Duafa, Keringanan\n• **Program Studi**: Sarjana S1, Diploma D3/D4, Magister S2, Doktor S3",
+        "citations": [],
+        "suggested_followup": "Apa saja dokumen persyaratan yang harus disiapkan untuk pendaftaran?",
+        "total_latency_ms": 124.39
+      }
+    }
+  ],
+  "generated_figure": "D:\\Kuliah\\Semester 6\\TrenTop\\UAS\\outputs\\figures\\06_rag_system_performance.png"
+}

@@ -1,0 +1,233 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   DESIGN TOKENS — 10/10 ENTERPRISE AI SAAS DESIGN SYSTEM
+   Exact Hex Colors:
+   - #22489E : Deep UII Royal Blue (Primary Brand Accent)
+   - #BDCDEA : Soft Periwinkle (Secondary Highlight)
+   - #D6CDC5 : Warm Sand (Warm Neutral Accent)
+   - #EFEEF1 : Soft Warm Pearl Surface
+   - #FFFFFF : Pure Crisp White Canvas
+   - #F8FAFC : Soft Crisp Slate Sidebar
+   - #0F172A : Deep Slate Navy Ink Typography Text
+   - #E2E8F0 : Mineral Slate 1px Border
+   - #059669 : Emerald Verified High Confidence Badge
+   - #D97706 : Amber Query Rewrite Badge
+   - #E11D48 : Rose Guardrail Badge
+   ============================================================ */
+:root {
+  --ink: #0F172A;
+  --ink-soft: #475569;
+  --paper: #FFFFFF;
+  --paper-raised: #FFFFFF;
+  --sidebar: #F8FAFC;
+  --pearl: #EFEEF1;
+  
+  --brand-blue: #22489E;
+  --periwinkle: #BDCDEA;
+  --warm-sand: #D6CDC5;
+  
+  --emerald-success: #059669;
+  --emerald-light: #D1FAE5;
+  --amber-warning: #D97706;
+  --amber-light: #FEF3C7;
+  --rose-error: #E11D48;
+  --rose-light: #FFE4E6;
+  
+  --line: #E2E8F0;
+}
+
+@layer base {
+  html, body, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #FFFFFF;
+    color: var(--ink);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', 'Inter', sans-serif;
+  }
+}
+
+.font-display {
+  font-family: 'Outfit', 'Inter', sans-serif;
+}
+
+.font-body {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.font-mono {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+/* Light Mode Markdown Rendering Styles with GFM Table Support */
+.markdown-body-light {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--ink);
+}
+
+.markdown-body-light a {
+  background-color: #F1F5F9;
+  color: #22489E;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 0.375rem;
+  border: 1px solid #CBD5E1;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: all 0.15s ease-in-out;
+}
+
+.markdown-body-light a:hover {
+  background-color: #E2E8F0;
+  color: #1D4ED8;
+  border-color: #94A3B8;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.markdown-body-light p {
+  margin-bottom: 0.85rem;
+}
+
+.markdown-body-light p:last-child {
+  margin-bottom: 0;
+}
+
+.markdown-body-light strong {
+  font-weight: 700;
+  color: var(--brand-blue);
+}
+
+.markdown-body-light h1, .markdown-body-light h2, .markdown-body-light h3, .markdown-body-light h4 {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  color: var(--brand-blue);
+  margin-top: 1.25rem;
+  margin-bottom: 0.65rem;
+}
+
+.markdown-body-light ul {
+  list-style-type: disc;
+  padding-left: 1.25rem;
+  margin-bottom: 0.85rem;
+}
+
+.markdown-body-light ol {
+  list-style-type: decimal;
+  padding-left: 1.25rem;
+  margin-bottom: 0.85rem;
+}
+
+.markdown-body-light li {
+  margin-bottom: 0.35rem;
+}
+
+.markdown-body-light blockquote {
+  border-left: 4px solid var(--brand-blue);
+  padding: 0.6rem 1rem;
+  color: var(--ink-soft);
+  font-style: italic;
+  margin: 0.85rem 0;
+  background-color: #F8FAFC;
+  border-radius: 0 0.5rem 0.5rem 0;
+  border: 1px solid var(--line);
+  border-left-width: 4px;
+  border-left-color: var(--brand-blue);
+}
+
+.markdown-body-light code {
+  background-color: #F1F5F9;
+  color: var(--brand-blue);
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.375rem;
+  font-size: 0.85em;
+  font-family: 'IBM Plex Mono', monospace;
+  border: 1px solid var(--line);
+}
+
+/* GFM Markdown Tables with Enterprise #22489E Header */
+.markdown-body-light table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  font-size: 0.875rem;
+  background-color: #FFFFFF;
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+}
+
+.markdown-body-light thead {
+  background-color: var(--brand-blue);
+}
+
+.markdown-body-light th {
+  padding: 0.75rem 1rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  text-align: left;
+  border: 1px solid #1E3A8A;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+}
+
+.markdown-body-light td {
+  padding: 0.65rem 1rem;
+  border: 1px solid var(--line);
+  color: var(--ink);
+}
+
+.markdown-body-light tr:nth-child(even) {
+  background-color: #F8FAFC;
+}
+
+.markdown-body-light tr:hover {
+  background-color: var(--pearl);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-bounce {
+    animation: none !important;
+  }
+}

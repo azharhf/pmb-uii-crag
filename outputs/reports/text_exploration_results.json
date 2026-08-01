@@ -1,0 +1,33 @@
+{
+  "total_tokens_analyzed": 20128,
+  "unique_vocabulary_size": 2750,
+  "top_10_unigrams": {
+    "uii": 517,
+    "program": 484,
+    "fakultas": 401,
+    "peringkat": 370,
+    "brosur": 349,
+    "studi": 333,
+    "islam": 217,
+    "ilmu": 187,
+    "indonesia": 174,
+    "teknik": 163
+  },
+  "top_10_bigrams": {
+    "brosur fakultas": 271,
+    "program studi": 251,
+    "peringkat peringkat": 240,
+    "islam indonesia": 119,
+    "universitas islam": 108,
+    "uang kuliah": 97,
+    "uka peringkat": 96,
+    "agama islam": 68,
+    "jalur tes": 65,
+    "kuliah awal": 62
+  },
+  "generated_figures": [
+    "D:\\Kuliah\\Semester 6\\TrenTop\\UAS\\outputs\\figures\\01_frequency_unigram_and_bigram_combined.png",
+    "D:\\Kuliah\\Semester 6\\TrenTop\\UAS\\outputs\\figures\\02_wordcloud_visualization.png",
+    "D:\\Kuliah\\Semester 6\\TrenTop\\UAS\\outputs\\figures\\03_cooccurrence_network.png"
+  ]
+}

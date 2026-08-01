@@ -1,0 +1,437 @@
+"""
+================================================================================
+UJIAN AKHIR SEMESTER (UAS) - TRENDING TOPICS ON STATISTICS 2026
+--------------------------------------------------------------------------------
+FASTAPI BACKEND SERVICE FOR HUGGING FACE SPACES DEPLOYMENT
+--------------------------------------------------------------------------------
+API Endpoints:
+- GET  /         : API status & metadata
+- GET  /health   : Healthcheck for Hugging Face Spaces Container
+- POST /api/chat : Core Corrective RAG (CRAG) Endpoint (Gemini 3.6 Flash + IndoBERT)
+- GET  /api/docs : PMB UII Knowledge Base Documents Explorer
+================================================================================
+"""
+
+import os
+import sys
+import warnings
+
+# Suppress TensorFlow C++ log output & disable oneDNN custom ops log notices
+os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+
+# Suppress PyTorch / Transformers FutureWarning & UserWarning deprecation notices
+warnings.filterwarnings("ignore", category=FutureWarning)
+warnings.filterwarnings("ignore", category=UserWarning)
+
+import json
+import time
+import re
+import importlib
+from typing import Optional, List, Dict, Any
+from contextlib import asynccontextmanager
+
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+import uvicorn
+
+# Add project root to sys.path
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+rag_module = importlib.import_module("pipeline.05_rag_system")
+HybridPMBRetriever = rag_module.HybridPMBRetriever
+CorrectiveRAGEngine = rag_module.CorrectiveRAGEngine
+
+# Global variables for Retriever and CRAG Engine
+retriever_instance: Optional[HybridPMBRetriever] = None
+crag_engine_instance: Optional[CorrectiveRAGEngine] = None
+knowledge_base_sections: List[Dict[str, Any]] = []
+
+# Supabase Client for CRAG Audit Logs
+supabase_client = None
+try:
+    from dotenv import load_dotenv
+    base_dir_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    load_dotenv(os.path.join(base_dir_path, ".env"))
+    s_url = os.getenv("SUPABASE_URL")
+    s_key = os.getenv("SUPABASE_SERVICE_KEY") or os.getenv("SUPABASE_ANON_KEY")
+    if s_url and s_key:
+        from supabase import create_client
+        supabase_client = create_client(s_url, s_key)
+        print("[+] Supabase client initialized for CRAG audit logging.")
+except Exception as e:
+    print(f"[!] Supabase client init notice: {e}")
+
+
+def log_crag_to_supabase(
+    user_query: str,
+    decision_path: str,
+    confidence_label: str,
+    rewritten_query: Optional[str],
+    top_score: float,
+    latency_ms: float,
+    answer_generated: str,
+    citations_count: int
+):
+    if not supabase_client:
+        return
+    try:
+        supabase_client.table("crag_logs").insert({
+            "user_query": user_query,
+            "decision_path": str(decision_path)[:50],
+            "confidence_label": str(confidence_label)[:50],
+            "rewritten_query": str(rewritten_query)[:255] if rewritten_query else None,
+            "top_score": float(top_score),
+            "latency_ms": float(latency_ms),
+            "answer_generated": str(answer_generated)[:3000],
+            "citations_count": int(citations_count)
+        }).execute()
+        print(f"[+] Successfully logged query '{user_query[:30]}...' to Supabase 'crag_logs' table.")
+    except Exception as e:
+        print(f"[!] Warning: Failed to insert crag_logs to Supabase: {e}")
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Modern FastAPI Lifespan Handler (replaces deprecated @app.on_event)."""
+    global retriever_instance, crag_engine_instance, knowledge_base_sections
+
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    json_path = os.path.join(base_dir, "outputs", "reports", "preprocessed_nlp_dataset.json")
+
+    if os.path.exists(json_path):
+        with open(json_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            knowledge_base_sections = data.get("data", [])
+
+        print(f"[+] Loaded {len(knowledge_base_sections)} sections into FastAPI Backend Knowledge Base.")
+        retriever_instance = HybridPMBRetriever(knowledge_base_sections)
+        crag_engine_instance = CorrectiveRAGEngine(retriever_instance)
+        print("[+] Corrective RAG Engine (Gemini 3.6 Flash + IndoBERT) initialized successfully.")
+    else:
+        print(f"[!] Warning: Knowledge Base JSON not found at {json_path}")
+    yield
+
+
+from fastapi.staticfiles import StaticFiles
+
+# Initialize FastAPI App with Lifespan
+app = FastAPI(
+    title="UII Academic CRAG Backend API",
+    description="Backend Service for PMB UII Corrective RAG System using Gemini 3.6 Flash & IndoBERT",
+    version="1.0.0",
+    lifespan=lifespan
+)
+
+# Enable CORS for Vercel Frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Mount static download directories for official brochures & documents
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+pdf_dir = os.path.join(base_dir, "data", "raw", "brosur", "pdf")
+unduh_dir = os.path.join(base_dir, "data", "raw", "unduh_dokumen")
+
+if os.path.exists(pdf_dir):
+    app.mount("/downloads/pdf", StaticFiles(directory=pdf_dir), name="downloads_pdf")
+
+if os.path.exists(unduh_dir):
+    app.mount("/downloads/unduh", StaticFiles(directory=unduh_dir), name="downloads_unduh")
+
+
+@app.get("/api/official_documents")
+def get_official_documents():
+    """Returns a complete list of all official PDF and DOCX documents in raw storage."""
+    docs = []
+    
+    # 1. PDF Brochures
+    if os.path.exists(pdf_dir):
+        for f in sorted(os.listdir(pdf_dir)):
+            if f.lower().endswith(".pdf"):
+                fpath = os.path.join(pdf_dir, f)
+                size_mb = round(os.path.getsize(fpath) / (1024 * 1024), 2)
+                clean_title = f.replace(".pdf", "").replace("-", " ").replace("_", " ").title()
+                docs.append({
+                    "title": clean_title,
+                    "filename": f,
+                    "category": "Brosur PDF Resmi",
+                    "type": "PDF",
+                    "size": f"{size_mb} MB",
+                    "download_url": f"/downloads/pdf/{f}"
+                })
+
+    # 2. Unduh Dokumen (PDF & DOCX)
+    if os.path.exists(unduh_dir):
+        for root, dirs, files in os.walk(unduh_dir):
+            for f in sorted(files):
+                if f.lower().endswith((".pdf", ".docx", ".doc")):
+                    fpath = os.path.join(root, f)
+                    rel_path = os.path.relpath(fpath, unduh_dir).replace("\\", "/")
+                    size_mb = round(os.path.getsize(fpath) / (1024 * 1024), 2)
+                    clean_title = f.replace(".pdf", "").replace(".docx", "").replace(".doc", "").replace("-", " ").replace("_", " ").title()
+                    ext = "PDF" if f.lower().endswith(".pdf") else "DOCX"
+                    docs.append({
+                        "title": clean_title,
+                        "filename": f,
+                        "category": "Panduan & Form Pendaftaran",
+                        "type": ext,
+                        "size": f"{size_mb} MB",
+                        "download_url": f"/downloads/unduh/{rel_path}"
+                    })
+
+    return {"total": len(docs), "documents": docs}
+
+
+class ChatRequest(BaseModel):
+    query: str
+    top_k: Optional[int] = 5
+    chat_history: Optional[List[dict]] = None
+
+
+class CitationItem(BaseModel):
+    rank: int
+    doc_id: str
+    module: str
+    section_title: str
+    relevance_score: str
+    raw_text: Optional[str] = None
+
+
+class ChatResponse(BaseModel):
+    query: str
+    effective_query: Optional[str] = None
+    decision_path: str
+    relevance_eval_label: str
+    top_relevance_score: float
+    rewritten_query: Optional[str] = None
+    answer: str
+    citations: List[CitationItem]
+    suggested_followup: Optional[str] = None
+    total_latency_ms: float
+
+
+@app.get("/")
+def root():
+    return {
+        "status": "online",
+        "service": "UII Academic CRAG Backend API",
+        "ai_model": "gemini-3.6-flash",
+        "vector_embeddings": "indobenchmark/indobert-base-p1",
+        "total_sections": len(knowledge_base_sections)
+    }
+
+
+@app.get("/health")
+def healthcheck():
+    return {"status": "healthy", "timestamp": time.time()}
+
+
+def validate_security_firewall(user_query: str):
+    """
+    Multi-Layer Security Firewall & Anti-Prompt-Injection Shield.
+    Blocks SQL Injection, Cross-Site Scripting (XSS), and Jailbreak/Prompt-Injection attacks.
+    """
+    if len(user_query) > 1000:
+        raise HTTPException(status_code=400, detail="[SECURITY FIREWALL] Query length exceeds maximum limit of 1000 characters.")
+
+    injection_patterns = [
+        r"ignore\s+previous\s+instruction",
+        r"disregard\s+all\s+rule",
+        r"system\s+override",
+        r"you\s+are\s+now\s+DAN",
+        r"jailbreak",
+        r"eval\(",
+        r"<script.*?>",
+        r"drop\s+table",
+        r"union\s+select",
+        r"exec\s*\("
+    ]
+
+    for pattern in injection_patterns:
+        if re.search(pattern, user_query, re.IGNORECASE):
+            raise HTTPException(
+                status_code=403,
+                detail="[SECURITY FIREWALL NOTICE] Query terdeteksi memuat pola serangan atau Prompt Injection yang dilarang."
+            )
+
+
+@app.middleware("http")
+async def add_security_headers(request, call_next):
+    response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["X-XSS-Protection"] = "1; mode=block"
+    response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+    return response
+
+
+from fastapi import FastAPI, HTTPException, BackgroundTasks
+
+@app.post("/api/chat", response_model=ChatResponse)
+def chat_endpoint(request: ChatRequest, background_tasks: BackgroundTasks):
+    if not request.query or not request.query.strip():
+        raise HTTPException(status_code=400, detail="Query string cannot be empty.")
+
+    validate_security_firewall(request.query.strip())
+
+    if not crag_engine_instance:
+        raise HTTPException(status_code=500, detail="CRAG Engine not initialized.")
+
+    try:
+        res = crag_engine_instance.process_query(
+            request.query.strip(),
+            top_k=request.top_k or 5,
+            chat_history=request.chat_history
+        )
+        background_tasks.add_task(
+            log_crag_to_supabase,
+            user_query=res.get("query", request.query.strip()),
+            decision_path=res.get("decision_path", ""),
+            confidence_label=res.get("relevance_eval_label", ""),
+            rewritten_query=res.get("rewritten_query"),
+            top_score=res.get("top_relevance_score", 0.0),
+            latency_ms=res.get("total_latency_ms", 0.0),
+            answer_generated=res.get("answer", ""),
+            citations_count=len(res.get("citations", []))
+        )
+        return res
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"CRAG processing error: {str(e)}")
+
+
+@app.post("/api/chat/stream")
+def chat_stream_endpoint(request: ChatRequest, background_tasks: BackgroundTasks):
+    """S2b: True Real-time SSE Token Streaming via Gemini generate_content_stream."""
+    if not request.query or not request.query.strip():
+        raise HTTPException(status_code=400, detail="Query string cannot be empty.")
+
+    validate_security_firewall(request.query.strip())
+
+    if not crag_engine_instance:
+        raise HTTPException(status_code=500, detail="CRAG Engine not initialized.")
+
+    def event_generator():
+        meta_info = {}
+        cit_count = 0
+        try:
+            history_payload = request.chat_history if request.chat_history else None
+
+            for event in crag_engine_instance.process_query_stream(
+                request.query.strip(),
+                top_k=request.top_k or 5,
+                chat_history=history_payload
+            ):
+                event_type = event.get("type", "unknown")
+
+                if event_type == "meta":
+                    meta_info = event
+                    yield f"event: meta\ndata: {json.dumps(event)}\n\n"
+
+                elif event_type == "citations":
+                    cit_count = len(event.get("citations", []))
+                    yield f"event: citations\ndata: {json.dumps(event)}\n\n"
+
+                elif event_type == "token":
+                    yield f"event: token\ndata: {json.dumps({'chunk': event['chunk']})}\n\n"
+
+                elif event_type == "final":
+                    # Guardrail fallback — stream the full answer as a single token
+                    yield f"event: token\ndata: {json.dumps({'chunk': event['answer']})}\n\n"
+                    if event.get("citations"):
+                        cit_count = len(event.get("citations", []))
+                        yield f"event: citations\ndata: {json.dumps({'type': 'citations', 'citations': event['citations']})}\n\n"
+
+                elif event_type == "done":
+                    yield f"event: done\ndata: {json.dumps(event)}\n\n"
+                    # Background log to Supabase crag_logs table
+                    background_tasks.add_task(
+                        log_crag_to_supabase,
+                        user_query=request.query.strip(),
+                        decision_path=meta_info.get("decision_path", "STREAM_PASS"),
+                        confidence_label=meta_info.get("relevance_eval_label", "NORMAL"),
+                        rewritten_query=meta_info.get("rewritten_query"),
+                        top_score=meta_info.get("top_relevance_score", 0.0),
+                        latency_ms=event.get("total_latency_ms", 0.0),
+                        answer_generated=event.get("answer", "") or "Stream Completed",
+                        citations_count=cit_count
+                    )
+
+        except Exception as e:
+            yield f"event: error\ndata: {json.dumps({'detail': str(e)})}\n\n"
+
+    from fastapi.responses import StreamingResponse
+    headers = {
+        "Cache-Control": "no-cache",
+        "Connection": "keep-alive",
+        "X-Accel-Buffering": "no"
+    }
+    return StreamingResponse(event_generator(), media_type="text/event-stream", headers=headers)
+
+
+@app.get("/api/documents")
+def get_documents_metadata():
+    if not knowledge_base_sections:
+        return {"total": 0, "modules": {}}
+
+    modules_count = {}
+    for sec in knowledge_base_sections:
+        mod = sec.get("module", "UNKNOWN")
+        modules_count[mod] = modules_count.get(mod, 0) + 1
+
+    return {
+        "total_chunks": len(knowledge_base_sections),
+        "modules_breakdown": modules_count
+    }
+
+
+MODULE_FILE_MAP = {
+    "BROSUR": ("brosur", "brosur_knowledge_base.md"),
+    "BIAYA": ("biaya", "biaya_pmb_knowledge_base.md"),
+    "BEASISWA": ("jalur_beasiswa", "beasiswa_knowledge_base.md"),
+    "JALUR_BEASISWA": ("jalur_beasiswa", "beasiswa_knowledge_base.md"),
+    "SELEKSI": ("jalur_tes", "tes_knowledge_base.md"),
+    "JALUR_TES": ("jalur_tes", "tes_knowledge_base.md"),
+    "JALUR_RAPOR": ("jalur_rapor", "rapor_knowledge_base.md"),
+    "RAPOR": ("jalur_rapor", "rapor_knowledge_base.md"),
+    "PRODI": ("prodi", "prodi_knowledge_base.md"),
+    "KONTAK": ("kontak", "kontak_knowledge_base.md"),
+    "FAQ": ("faq", "faq_knowledge_base.md"),
+    "PEMBAYARAN": ("pembayaran", "pembayaran_knowledge_base.md"),
+    "UNDUH_DOKUMEN": ("unduh_dokumen", "unduh_dokumen_knowledge_base.md"),
+    "CONTOH_SOAL": ("contoh_soal", "contoh_soal_knowledge_base.md"),
+}
+
+
+@app.get("/api/document/{module_name}")
+def get_full_document(module_name: str):
+    mod_key = module_name.upper().strip()
+    if mod_key not in MODULE_FILE_MAP:
+        folder, fname = "brosur", "brosur_knowledge_base.md"
+    else:
+        folder, fname = MODULE_FILE_MAP[mod_key]
+
+    file_path = os.path.join(base_dir, "data", "processed", folder, fname)
+    if not os.path.exists(file_path):
+        raise HTTPException(status_code=404, detail=f"Document file {fname} not found.")
+
+    with open(file_path, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    return {
+        "module": mod_key,
+        "filename": fname,
+        "file_path": file_path,
+        "total_chars": len(content),
+        "content": content
+    }
+
+
+if __name__ == "__main__":
+    uvicorn.run("backend.main:app", host="0.0.0.0", port=7860, reload=True)
+

@@ -1,0 +1,102 @@
+{
+  "sumber_data": "Portal Resmi PMB Universitas Islam Indonesia (pmb.uii.ac.id) & 10 Dokumen Cetak Brosur Fisik PDF UII TA 2026/2027.",
+  "tujuan_analisis": "Membangun sistem AI modern berbasis Retrieval-Augmented Generation (RAG) & Text Mining untuk menjawab pertanyaan calon mahasiswa seputar PMB UII secara presisi.",
+  "jumlah_dokumen_semantik_total": 188,
+  "total_karakter_text": 214326,
+  "karakteristik_data": "Data heterogen gabungan teks terstruktur (Tabel Biaya, Syarat Seleksi), teks naratif (Prospek Karir, Profil Prodi), serta gambar infografis (Brosur PDF) yang diekstrak secara multimodal.",
+  "potensi_permasalahan_yang_diselesaikan": [
+    "Kesulitan calon mahasiswa dalam memilih dari 48 pilihan prodi dan 16 program internasional UII.",
+    "Asimetri informasi rincian biaya kuliah per semester dan skema beasiswa.",
+    "Kebutuhan pencarian informasi cepat berbasis bahasa alami (Natural Language Query) tanpa membaca puluhan dokumen PDF secara manual."
+  ],
+  "detail_modul": [
+    {
+      "modul": "brosur",
+      "metode_akuisisi": "Multimodal Vision OCR (PDF)",
+      "unit_semantik": "File Brosur PDF Fisik",
+      "jumlah_dokumen_semantik": 20,
+      "total_karakter": 74041,
+      "status": "AVAILABLE"
+    },
+    {
+      "modul": "biaya",
+      "metode_akuisisi": "Web Scraper (HTML Table)",
+      "unit_semantik": "Record Tabel Biaya Per Prodi",
+      "jumlah_dokumen_semantik": 48,
+      "total_karakter": 21165,
+      "status": "AVAILABLE"
+    },
+    {
+      "modul": "prodi",
+      "metode_akuisisi": "Web Scraper (HTML List)",
+      "unit_semantik": "Daftar Prodi Per Fakultas",
+      "jumlah_dokumen_semantik": 9,
+      "total_karakter": 6845,
+      "status": "AVAILABLE"
+    },
+    {
+      "modul": "faq",
+      "metode_akuisisi": "Web Scraper (HTML Accordion)",
+      "unit_semantik": "Item Tanya Jawab (Accordion QA)",
+      "jumlah_dokumen_semantik": 47,
+      "total_karakter": 17629,
+      "status": "AVAILABLE"
+    },
+    {
+      "modul": "pembayaran",
+      "metode_akuisisi": "Web Scraper (HTML Table)",
+      "unit_semantik": "Panduan & Petunjuk Bank",
+      "jumlah_dokumen_semantik": 23,
+      "total_karakter": 8686,
+      "status": "AVAILABLE"
+    },
+    {
+      "modul": "kontak",
+      "metode_akuisisi": "Web Scraper (HTML Card)",
+      "unit_semantik": "Kartu Kontak Direktori Fakultas",
+      "jumlah_dokumen_semantik": 16,
+      "total_karakter": 20862,
+      "status": "AVAILABLE"
+    },
+    {
+      "modul": "jalur_rapor",
+      "metode_akuisisi": "Web Scraper (HTML Section)",
+      "unit_semantik": "Kategori Jalur Rapor",
+      "jumlah_dokumen_semantik": 4,
+      "total_karakter": 10300,
+      "status": "AVAILABLE"
+    },
+    {
+      "modul": "jalur_tes",
+      "metode_akuisisi": "Web Scraper (HTML Section)",
+      "unit_semantik": "Kategori Jalur Tes CBT",
+      "jumlah_dokumen_semantik": 3,
+      "total_karakter": 6953,
+      "status": "AVAILABLE"
+    },
+    {
+      "modul": "jalur_beasiswa",
+      "metode_akuisisi": "Web Scraper (HTML Section)",
+      "unit_semantik": "Skema Kategori Beasiswa",
+      "jumlah_dokumen_semantik": 7,
+      "total_karakter": 18652,
+      "status": "AVAILABLE"
+    },
+    {
+      "modul": "contoh_soal",
+      "metode_akuisisi": "Web Scraper (HTML Link)",
+      "unit_semantik": "Mata Ujian & Link Panduan",
+      "jumlah_dokumen_semantik": 3,
+      "total_karakter": 8224,
+      "status": "AVAILABLE"
+    },
+    {
+      "modul": "unduh_dokumen",
+      "metode_akuisisi": "Document Parser (DOCX/PDF)",
+      "unit_semantik": "Dokumen Unduhan Surat/Pedoman",
+      "jumlah_dokumen_semantik": 8,
+      "total_karakter": 20969,
+      "status": "AVAILABLE"
+    }
+  ]
+}
