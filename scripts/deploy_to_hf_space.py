@@ -296,12 +296,25 @@ def run_crag_inference_gui(user_query: str, top_k: int = 5):
 
         cits_data = []
         for c in res.get("citations", []):
+            raw_score = c.get("relevance_score", "0")
+            if isinstance(raw_score, (int, float)):
+                score_str = f"{float(raw_score):.4f}"
+            else:
+                score_clean = str(raw_score).replace("%", "").strip()
+                try:
+                    score_val = float(score_clean)
+                    if "%" in str(raw_score):
+                        score_val = score_val / 100.0 if score_val > 1.0 else score_val
+                    score_str = f"{score_val:.4f}"
+                except ValueError:
+                    score_str = str(raw_score)
+
             cits_data.append([
                 c.get("rank", 0),
                 c.get("doc_id", ""),
                 c.get("module", ""),
                 c.get("section_title", ""),
-                f"{float(c.get('relevance_score', 0)):.4f}"
+                score_str
             ])
 
         return answer_md, badge_html, cits_data, res
