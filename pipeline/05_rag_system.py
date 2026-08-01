@@ -60,7 +60,13 @@ plt.rcParams['axes.linewidth'] = 1.0
 # =============================================================================
 
 def load_gemini_api_keys():
-    """Load and parse GEMINI_API_KEYS list from .env file."""
+    """Load and parse GEMINI_API_KEYS list from os.environ or .env file."""
+    env_val = os.environ.get("GEMINI_API_KEYS")
+    if env_val:
+        keys = [k.strip() for k in env_val.split(",") if k.strip()]
+        if keys:
+            return keys
+
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     env_path = os.path.join(base_dir, ".env")
     keys = []
@@ -82,12 +88,22 @@ _client_cache = {}
 _response_cache = {}
 _CACHE_TTL_SECONDS = 1800  # 30 minutes
 
+_GENAI_AVAILABLE = False
+_USING_NEW_GENAI = False
+_USING_LEGACY_GENAI = False
+
 try:
     from google import genai
     from google.genai import types
     _GENAI_AVAILABLE = True
+    _USING_NEW_GENAI = True
 except ImportError:
-    _GENAI_AVAILABLE = False
+    try:
+        import google.generativeai as genai_legacy
+        _GENAI_AVAILABLE = True
+        _USING_LEGACY_GENAI = True
+    except ImportError:
+        _GENAI_AVAILABLE = False
 
 
 def _get_cached_client(api_key):
@@ -95,7 +111,7 @@ def _get_cached_client(api_key):
     if api_key not in _client_cache:
         _client_cache[api_key] = genai.Client(
             api_key=api_key,
-            http_options=types.HttpOptions(timeout=60_000)  # 60 second timeout — generous for inference, prevents runaway retries
+            http_options=types.HttpOptions(timeout=60_000)
         )
     return _client_cache[api_key]
 
@@ -109,15 +125,14 @@ def _get_cache_key(prompt, system_instruction=None):
 
 def call_gemini_api(prompt, system_instruction=None):
     """
-    Call Gemini API using official google.genai SDK with gemini-3.6-flash,
-    Singleton Client reuse (10s timeout), automatic key rotation across projects.
+    Call Gemini API using gemini-3.6-flash model with automatic key rotation across projects.
     Returns (success, response_text).
     """
     global _current_key_idx
     if not GEMINI_KEYS:
         return False, "No Gemini API keys configured."
     if not _GENAI_AVAILABLE:
-        return False, "google-genai SDK not installed."
+        return False, "Gemini SDK not installed."
 
     # S5: Check response cache first
     cache_key = _get_cache_key(prompt, system_instruction)
@@ -132,27 +147,40 @@ def call_gemini_api(prompt, system_instruction=None):
     for attempt in range(num_keys):
         key = GEMINI_KEYS[_current_key_idx]
         try:
-            client = _get_cached_client(key)
-            config_kwargs = {
-                "temperature": 0.2,
-                "max_output_tokens": 4096
-            }
-            if system_instruction:
-                config_kwargs["system_instruction"] = system_instruction
+            if _USING_NEW_GENAI:
+                client = _get_cached_client(key)
+                config_kwargs = {
+                    "temperature": 0.2,
+                    "max_output_tokens": 4096
+                }
+                if system_instruction:
+                    config_kwargs["system_instruction"] = system_instruction
 
-            config = types.GenerateContentConfig(**config_kwargs)
-            res = client.models.generate_content(
-                model=target_model,
-                contents=[prompt],
-                config=config
-            )
-            if res and res.text:
-                result_text = res.text.strip()
-                # S5: Store in cache
-                _response_cache[cache_key] = (time.time(), result_text)
-                return True, result_text
+                config = types.GenerateContentConfig(**config_kwargs)
+                res = client.models.generate_content(
+                    model=target_model,
+                    contents=[prompt],
+                    config=config
+                )
+                if res and res.text:
+                    result_text = res.text.strip()
+                    _response_cache[cache_key] = (time.time(), result_text)
+                    return True, result_text
+            elif _USING_LEGACY_GENAI:
+                import google.generativeai as genai_legacy
+                genai_legacy.configure(api_key=key)
+                model = genai_legacy.GenerativeModel(
+                    model_name=target_model,
+                    system_instruction=system_instruction,
+                    generation_config={"temperature": 0.2, "max_output_tokens": 4096}
+                )
+                res = model.generate_content(prompt)
+                if res and res.text:
+                    result_text = res.text.strip()
+                    _response_cache[cache_key] = (time.time(), result_text)
+                    return True, result_text
         except Exception as e:
-            # Rotate to next key immediately on error/quota limit
+            print(f"[!] Gemini API Error on key idx {_current_key_idx} ({target_model}): {type(e).__name__}: {e}")
             _current_key_idx = (_current_key_idx + 1) % num_keys
 
     return False, "Gemini API unavailable or quota exceeded."
@@ -162,7 +190,7 @@ def call_gemini_api_stream(prompt, system_instruction=None):
     """
     S2a: True Server-Side Streaming — yields token chunks from Gemini API
     as they are generated, for real-time SSE delivery to frontend.
-    Uses gemini-3.6-flash with resilient failover across all available API keys.
+    Uses gemini-3.6-flash / gemini-1.5-flash with resilient failover across all available API keys.
     """
     global _current_key_idx
     if not GEMINI_KEYS or not _GENAI_AVAILABLE:
@@ -175,30 +203,49 @@ def call_gemini_api_stream(prompt, system_instruction=None):
     for attempt in range(num_keys):
         key = GEMINI_KEYS[_current_key_idx]
         try:
-            client = _get_cached_client(key)
-            config_kwargs = {
-                "temperature": 0.2,
-                "max_output_tokens": 4096
-            }
-            if system_instruction:
-                config_kwargs["system_instruction"] = system_instruction
+            if _USING_NEW_GENAI:
+                client = _get_cached_client(key)
+                config_kwargs = {
+                    "temperature": 0.2,
+                    "max_output_tokens": 4096
+                }
+                if system_instruction:
+                    config_kwargs["system_instruction"] = system_instruction
 
-            config = types.GenerateContentConfig(**config_kwargs)
-            response_stream = client.models.generate_content_stream(
-                model=target_model,
-                contents=[prompt],
-                config=config
-            )
-            
-            # Buffer stream to ensure key is valid before yielding chunks
-            streamed_any = False
-            for chunk in response_stream:
-                if chunk.text:
-                    streamed_any = True
-                    yield chunk.text
+                config = types.GenerateContentConfig(**config_kwargs)
+                response_stream = client.models.generate_content_stream(
+                    model=target_model,
+                    contents=[prompt],
+                    config=config
+                )
+                
+                streamed_any = False
+                for chunk in response_stream:
+                    if chunk.text:
+                        streamed_any = True
+                        yield chunk.text
 
-            if streamed_any:
-                return
+                if streamed_any:
+                    return
+            elif _USING_LEGACY_GENAI:
+                import google.generativeai as genai_legacy
+                genai_legacy.configure(api_key=key)
+                model = genai_legacy.GenerativeModel(
+                    model_name="gemini-1.5-flash",
+                    system_instruction=system_instruction,
+                    generation_config={"temperature": 0.2, "max_output_tokens": 4096}
+                )
+                response_stream = model.generate_content(prompt, stream=True)
+                streamed_any = False
+                for chunk in response_stream:
+                    if chunk.text:
+                        streamed_any = True
+                        yield chunk.text
+
+                if streamed_any:
+                    return
+        except Exception as e:
+            _current_key_idx = (_current_key_idx + 1) % num_keys
         except Exception:
             _current_key_idx = (_current_key_idx + 1) % num_keys
 

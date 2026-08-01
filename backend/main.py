@@ -28,6 +28,9 @@ import json
 import time
 import re
 import importlib
+
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = PROJECT_ROOT
 from typing import Optional, List, Dict, Any
 from contextlib import asynccontextmanager
 
@@ -48,8 +51,9 @@ retriever_instance: Optional[HybridPMBRetriever] = None
 crag_engine_instance: Optional[CorrectiveRAGEngine] = None
 knowledge_base_sections: List[Dict[str, Any]] = []
 
-# Supabase Client for CRAG Audit Logs
-supabase_client = None
+# Supabase REST Credentials for CRAG Audit Logs
+s_url = None
+s_key = None
 try:
     from dotenv import load_dotenv
     base_dir_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -57,11 +61,9 @@ try:
     s_url = os.getenv("SUPABASE_URL")
     s_key = os.getenv("SUPABASE_SERVICE_KEY") or os.getenv("SUPABASE_ANON_KEY")
     if s_url and s_key:
-        from supabase import create_client
-        supabase_client = create_client(s_url, s_key)
-        print("[+] Supabase client initialized for CRAG audit logging.")
+        print("[+] Supabase REST logging configured for CRAG audit logging.")
 except Exception as e:
-    print(f"[!] Supabase client init notice: {e}")
+        print(f"[!] Supabase config notice: {e}")
 
 
 def log_crag_to_supabase(
@@ -74,32 +76,39 @@ def log_crag_to_supabase(
     answer_generated: str,
     citations_count: int
 ):
-    if not supabase_client:
+    if not (s_url and s_key):
         return
     try:
-        supabase_client.table("crag_logs").insert({
+        import requests
+        headers = {
+            "apikey": s_key,
+            "Authorization": f"Bearer {s_key}",
+            "Content-Type": "application/json",
+            "Prefer": "return=minimal"
+        }
+        payload = {
             "user_query": user_query,
             "decision_path": str(decision_path)[:50],
             "confidence_label": str(confidence_label)[:50],
             "rewritten_query": str(rewritten_query)[:255] if rewritten_query else None,
             "top_score": float(top_score),
             "latency_ms": float(latency_ms),
-            "answer_generated": str(answer_generated)[:3000],
+            "answer_generated": str(answer_generated)[:1000] if answer_generated else None,
             "citations_count": int(citations_count)
-        }).execute()
+        }
+        requests.post(f"{s_url.rstrip('/')}/rest/v1/crag_logs", json=payload, headers=headers, timeout=3)
         print(f"[+] Successfully logged query '{user_query[:30]}...' to Supabase 'crag_logs' table.")
     except Exception as e:
         print(f"[!] Warning: Failed to insert crag_logs to Supabase: {e}")
 
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    """Modern FastAPI Lifespan Handler (replaces deprecated @app.on_event)."""
-    global retriever_instance, crag_engine_instance, knowledge_base_sections
-
+def init_crag_engine():
+    global crag_engine_instance, knowledge_base_sections
+    if crag_engine_instance is not None:
+        return crag_engine_instance
+        
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     json_path = os.path.join(base_dir, "outputs", "reports", "preprocessed_nlp_dataset.json")
-
     if os.path.exists(json_path):
         with open(json_path, "r", encoding="utf-8") as f:
             data = json.load(f)
@@ -111,6 +120,12 @@ async def lifespan(app: FastAPI):
         print("[+] Corrective RAG Engine (Gemini 3.6 Flash + IndoBERT) initialized successfully.")
     else:
         print(f"[!] Warning: Knowledge Base JSON not found at {json_path}")
+    return crag_engine_instance
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    init_crag_engine()
     yield
 
 
@@ -273,6 +288,23 @@ async def add_security_headers(request, call_next):
 
 from fastapi import FastAPI, HTTPException, BackgroundTasks
 
+@app.get("/api/rag/health")
+@app.get("/health")
+def health_check():
+    """Health check endpoint to verify Backend + Knowledge Base status."""
+    kb_loaded = len(knowledge_base_sections) > 0
+    engine_ready = crag_engine_instance is not None
+    return {
+        "status": "healthy" if (kb_loaded and engine_ready) else "degraded",
+        "knowledge_base_sections": len(knowledge_base_sections),
+        "engine_initialized": engine_ready,
+        "supabase_logging": (s_url is not None and s_key is not None),
+        "keys_configured": len(GEMINI_KEYS)
+    }
+
+
+@app.post("/api/rag/chat", response_model=ChatResponse)
+@app.post("/api/v1/chat", response_model=ChatResponse)
 @app.post("/api/chat", response_model=ChatResponse)
 def chat_endpoint(request: ChatRequest, background_tasks: BackgroundTasks):
     if not request.query or not request.query.strip():
@@ -291,20 +323,44 @@ def chat_endpoint(request: ChatRequest, background_tasks: BackgroundTasks):
         )
         background_tasks.add_task(
             log_crag_to_supabase,
-            user_query=res.get("query", request.query.strip()),
-            decision_path=res.get("decision_path", ""),
-            confidence_label=res.get("relevance_eval_label", ""),
+            user_query=request.query.strip(),
+            decision_path=res.get("decision_path", "UNKNOWN"),
+            confidence_label=res.get("relevance_eval_label", "UNKNOWN"),
             rewritten_query=res.get("rewritten_query"),
             top_score=res.get("top_relevance_score", 0.0),
-            latency_ms=res.get("total_latency_ms", 0.0),
+            latency_ms=res.get("latency_ms", 0.0),
             answer_generated=res.get("answer", ""),
             citations_count=len(res.get("citations", []))
         )
-        return res
+
+        citations_items = []
+        for c in res.get("citations", []):
+            citations_items.append(CitationItem(
+                rank=c.get("rank", 0),
+                doc_id=str(c.get("doc_id", "")),
+                module=c.get("module", ""),
+                section_title=c.get("section_title", ""),
+                relevance_score=str(c.get("relevance_score", "0")),
+                raw_text=c.get("raw_text")
+            ))
+
+        return ChatResponse(
+            query=res.get("query", request.query.strip()),
+            effective_query=res.get("effective_query"),
+            decision_path=res.get("decision_path", "UNKNOWN"),
+            relevance_eval_label=res.get("relevance_eval_label", "UNKNOWN"),
+            top_relevance_score=float(res.get("top_relevance_score", 0.0)),
+            rewritten_query=res.get("rewritten_query"),
+            answer=res.get("answer", ""),
+            citations=citations_items,
+            total_latency_ms=float(res.get("latency_ms", 0.0))
+        )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"CRAG processing error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Inference error: {str(e)}")
 
 
+@app.post("/api/rag/stream")
+@app.post("/api/v1/chat/stream")
 @app.post("/api/chat/stream")
 def chat_stream_endpoint(request: ChatRequest, background_tasks: BackgroundTasks):
     """S2b: True Real-time SSE Token Streaming via Gemini generate_content_stream."""
