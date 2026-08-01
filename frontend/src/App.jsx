@@ -47,7 +47,8 @@ import {
   Check,
   Pencil,
   RotateCcw,
-  Sliders
+  Sliders,
+  ExternalLink
 } from 'lucide-react';
 
 const API_BASE_URL = (
