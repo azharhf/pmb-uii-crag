@@ -231,7 +231,7 @@ def call_gemini_api_stream(prompt, system_instruction=None):
                 import google.generativeai as genai_legacy
                 genai_legacy.configure(api_key=key)
                 model = genai_legacy.GenerativeModel(
-                    model_name="gemini-1.5-flash",
+                    model_name=target_model,
                     system_instruction=system_instruction,
                     generation_config={"temperature": 0.2, "max_output_tokens": 4096}
                 )
