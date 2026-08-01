@@ -43,6 +43,7 @@ license: mit
     app_py_content = r'''import os
 import sys
 import json
+import time
 import warnings
 import re as _re
 
@@ -264,6 +265,7 @@ except Exception:
 
 @_gpu_dec
 def run_crag_inference_gui(user_query: str, top_k: int = 5):
+    t0 = time.time()
     if not user_query or not user_query.strip():
         return "Mohon masukkan pertanyaan seputar PMB UII.", "[ERROR] Kueri Kosong", [], {"error": "Query cannot be empty."}
     
@@ -273,6 +275,9 @@ def run_crag_inference_gui(user_query: str, top_k: int = 5):
         
     try:
         res = engine.process_query(user_query.strip(), top_k=int(top_k))
+        calc_latency = (time.time() - t0) * 1000.0
+        res["latency_ms"] = calc_latency
+
         try:
             backend.log_crag_to_supabase(
                 user_query=user_query.strip(),
@@ -280,7 +285,7 @@ def run_crag_inference_gui(user_query: str, top_k: int = 5):
                 confidence_label=res.get("relevance_eval_label", "UNKNOWN"),
                 rewritten_query=res.get("rewritten_query"),
                 top_score=res.get("top_relevance_score", 0.0),
-                latency_ms=res.get("latency_ms", 0.0),
+                latency_ms=calc_latency,
                 answer_generated=res.get("answer", ""),
                 citations_count=len(res.get("citations", []))
             )
@@ -290,9 +295,8 @@ def run_crag_inference_gui(user_query: str, top_k: int = 5):
         answer_md = res.get("answer", "")
         decision_path = res.get("decision_path", "UNKNOWN")
         eval_label = res.get("relevance_eval_label", "NORMAL")
-        latency = res.get("latency_ms", 0.0)
 
-        badge_html = f"**Decision Path:** `{decision_path}` | **Evaluation:** `{eval_label}` | **Latency:** `{latency:.2f} ms`"
+        badge_html = f"**Decision Path:** `{decision_path}` | **Evaluation:** `{eval_label}` | **Latency:** `{calc_latency:.2f} ms`"
 
         cits_data = []
         for c in res.get("citations", []):
