@@ -1497,13 +1497,19 @@ export default function App() {
               </button>
             </div>
 
-            {/* IFRAME PDF VIEWER CANVAS WITH GOOGLE DOCS VIEWER EMBEDDER & DIRECT LINK */}
+            {/* HIGH-PERFORMANCE NATIVE PDF VIEWER WITH GOOGLE DOCS VIEWER FALLBACK */}
             <div className="flex-1 bg-[#F8FAFC] p-3 sm:p-4 flex flex-col min-h-[450px]">
-              <iframe
-                src={`https://docs.google.com/gview?url=${encodeURIComponent(resolveDocUrl(pdfPreviewModalDoc.download_url))}&embedded=true`}
-                title={pdfPreviewModalDoc.title}
+              <object
+                data={resolveDocUrl(pdfPreviewModalDoc.download_url)}
+                type="application/pdf"
                 className="w-full flex-1 rounded-xl border border-[#E2E8F0] bg-white shadow-xs min-h-[450px] sm:min-h-[550px]"
-              />
+              >
+                <iframe
+                  src={`https://docs.google.com/gview?url=${encodeURIComponent(resolveDocUrl(pdfPreviewModalDoc.download_url))}&embedded=true`}
+                  title={pdfPreviewModalDoc.title}
+                  className="w-full flex-1 rounded-xl border border-[#E2E8F0] bg-white shadow-xs min-h-[450px] sm:min-h-[550px]"
+                />
+              </object>
             </div>
 
             <div className="p-4 border-t border-[#E2E8F0] bg-white flex items-center justify-between text-xs font-display gap-2">
