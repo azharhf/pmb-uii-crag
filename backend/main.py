@@ -162,8 +162,9 @@ if os.path.exists(unduh_dir):
 
 @app.get("/api/official_documents")
 def get_official_documents():
-    """Returns a complete list of all official PDF and DOCX documents in raw storage."""
+    """Returns a complete list of all official PDF and DOCX documents hosted on Supabase Storage CDN."""
     docs = []
+    supabase_base = f"{s_url.rstrip('/')}/storage/v1/object/public/pmb-documents" if s_url else None
     
     # 1. PDF Brochures
     if os.path.exists(pdf_dir):
@@ -172,13 +173,14 @@ def get_official_documents():
                 fpath = os.path.join(pdf_dir, f)
                 size_mb = round(os.path.getsize(fpath) / (1024 * 1024), 2)
                 clean_title = f.replace(".pdf", "").replace("-", " ").replace("_", " ").title()
+                dl_url = f"{supabase_base}/pdf/{f}" if supabase_base else f"/downloads/pdf/{f}"
                 docs.append({
                     "title": clean_title,
                     "filename": f,
                     "category": "Brosur PDF Resmi",
                     "type": "PDF",
                     "size": f"{size_mb} MB",
-                    "download_url": f"/downloads/pdf/{f}"
+                    "download_url": dl_url
                 })
 
     # 2. Unduh Dokumen (PDF & DOCX)
@@ -191,13 +193,14 @@ def get_official_documents():
                     size_mb = round(os.path.getsize(fpath) / (1024 * 1024), 2)
                     clean_title = f.replace(".pdf", "").replace(".docx", "").replace(".doc", "").replace("-", " ").replace("_", " ").title()
                     ext = "PDF" if f.lower().endswith(".pdf") else "DOCX"
+                    dl_url = f"{supabase_base}/unduh/{rel_path}" if supabase_base else f"/downloads/unduh/{rel_path}"
                     docs.append({
                         "title": clean_title,
                         "filename": f,
                         "category": "Panduan & Form Pendaftaran",
                         "type": ext,
                         "size": f"{size_mb} MB",
-                        "download_url": f"/downloads/unduh/{rel_path}"
+                        "download_url": dl_url
                     })
 
     return {"total": len(docs), "documents": docs}
@@ -466,23 +469,47 @@ MODULE_FILE_MAP = {
 
 @app.get("/api/document/{module_name}")
 def get_full_document(module_name: str):
-    mod_key = module_name.upper().strip()
-    if mod_key not in MODULE_FILE_MAP:
-        folder, fname = "brosur", "brosur_knowledge_base.md"
+    clean_mod = module_name.split(":")[0].split("-")[0].upper().strip()
+    if clean_mod not in MODULE_FILE_MAP:
+        matched_key = None
+        for k in MODULE_FILE_MAP:
+            if k in clean_mod or clean_mod in k:
+                matched_key = k
+                break
+        if matched_key:
+            folder, fname = MODULE_FILE_MAP[matched_key]
+            mod_key = matched_key
+        else:
+            folder, fname = "brosur", "brosur_knowledge_base.md"
+            mod_key = "BROSUR"
     else:
-        folder, fname = MODULE_FILE_MAP[mod_key]
+        folder, fname = MODULE_FILE_MAP[clean_mod]
+        mod_key = clean_mod
 
+    # 1. Try loading from Supabase Storage CDN first
+    content = None
+    supabase_cdn = f"{s_url.rstrip('/')}/storage/v1/object/public/pmb-documents/master_md/{fname}" if s_url else None
+    if supabase_cdn:
+        try:
+            import requests
+            r = requests.get(supabase_cdn, timeout=4)
+            if r.status_code == 200:
+                content = r.text
+        except Exception:
+            pass
+
+    # 2. Fallback to local disk
     file_path = os.path.join(base_dir, "data", "processed", folder, fname)
-    if not os.path.exists(file_path):
-        raise HTTPException(status_code=404, detail=f"Document file {fname} not found.")
-
-    with open(file_path, "r", encoding="utf-8") as f:
-        content = f.read()
+    if content is None:
+        if not os.path.exists(file_path):
+            raise HTTPException(status_code=404, detail=f"Document file {fname} not found.")
+        with open(file_path, "r", encoding="utf-8") as f:
+            content = f.read()
 
     return {
         "module": mod_key,
         "filename": fname,
-        "file_path": file_path,
+        "file_path": supabase_cdn or file_path,
         "total_chars": len(content),
         "content": content
     }

@@ -505,7 +505,7 @@ export default function App() {
   });
 
   return (
-    <div className="h-screen w-screen flex bg-white font-sans text-[#0F172A] antialiased overflow-hidden">
+    <div className="h-[100dvh] w-screen flex bg-white font-sans text-[#0F172A] antialiased overflow-hidden">
       {/* DESKTOP SIDEBAR (320px) & SLIM RAIL (64px) - HIDDEN ON MOBILE */}
       {sidebarOpen ? (
         /* EXPANDED ENTERPRISE SIDEBAR (320px) */
@@ -818,9 +818,9 @@ export default function App() {
       )}
 
       {/* MAIN CHAT CANVAS (PURE WHITE BACKGROUND #FFFFFF) */}
-      <main className="flex-1 flex flex-col h-full overflow-hidden bg-white relative pb-44">
+      <main className="flex-1 flex flex-col h-full overflow-hidden bg-white relative">
         {/* MOBILE STICKY TOPBAR WITH 2-LINE HAMBURGER BUTTON */}
-        <div className="md:hidden flex items-center justify-between px-4 py-2.5 border-b border-[#E2E8F0] bg-white sticky top-0 z-30 shadow-2xs">
+        <div className="md:hidden flex items-center justify-between px-4 py-3 border-b border-[#E2E8F0] bg-white flex-shrink-0 z-30 shadow-2xs">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setMobileDrawerOpen(true)}
@@ -840,7 +840,7 @@ export default function App() {
         </div>
 
         {/* MESSAGES CONTAINER */}
-        <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 sm:py-6 w-full">
+        <div className="flex-1 overflow-y-auto px-3 sm:px-6 pt-3 pb-36 sm:pb-40 w-full">
           <div className="max-w-3xl mx-auto space-y-4 sm:space-y-5">
             {messages.map((msg) => (
               <div
