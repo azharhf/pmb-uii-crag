@@ -56,6 +56,14 @@ const API_BASE_URL = (
   'https://azharhf-pmb-uii-crag-backend.hf.space'
 ).replace(/\/$/, '');
 
+const resolveDocUrl = (url) => {
+  if (!url) return '#';
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    return url;
+  }
+  return `${API_BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
+};
+
 export default function App() {
   const [query, setQuery] = useState('');
   const [messages, setMessages] = useState([
@@ -1229,48 +1237,51 @@ export default function App() {
       {fullMdDoc && (
         <div className="fixed inset-0 z-50 bg-[#0F172A]/50 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6">
           <div className="bg-white rounded-2xl border border-[#E2E8F0] shadow-2xl max-w-5xl w-full max-h-[92vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
-            {/* READER E-BOOK HEADER WITH REAL-TIME SEARCH BAR */}
-            <div className="p-4 border-b border-[#E2E8F0] bg-[#22489E] text-white flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-white text-[#22489E] flex items-center justify-center font-bold font-display">
-                  <BookMarked className="w-5 h-5" />
-                </div>
-                <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#22489E] bg-[#BDCDEA] px-2.5 py-0.5 rounded-full font-display">
-                    MARKDOWN E-BOOK READER (.MD)
-                  </span>
-                  <h3 className="text-sm sm:text-base font-bold font-display mt-0.5">
-                    {fullMdDoc.filename} ({fullMdDoc.total_chars.toLocaleString()} Karakter)
-                  </h3>
+            {/* READER E-BOOK HEADER WITH PERFECT MOBILE RESPONSIVENESS & TOP-RIGHT CLOSE BUTTON */}
+            <div className="p-4 border-b border-[#E2E8F0] bg-[#22489E] text-white relative flex flex-col gap-3">
+              <div className="flex items-start justify-between gap-3 pr-10">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-white text-[#22489E] flex items-center justify-center font-bold font-display flex-shrink-0 shadow-xs">
+                    <BookMarked className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#22489E] bg-[#BDCDEA] px-2.5 py-0.5 rounded-full font-display">
+                      MARKDOWN E-BOOK READER (.MD)
+                    </span>
+                    <h3 className="text-sm sm:text-base font-bold font-display mt-0.5 leading-snug">
+                      {fullMdDoc.filename} ({fullMdDoc.total_chars.toLocaleString()} Karakter)
+                    </h3>
+                  </div>
                 </div>
               </div>
 
-              {/* REAL-TIME FUNCTIONING SEARCH BAR */}
-              <div className="flex items-center gap-2">
-                <div className="relative">
-                  <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                  <input
-                    type="text"
-                    value={mdSearchQuery}
-                    onChange={(e) => setMdSearchQuery(e.target.value)}
-                    placeholder="Cari kata di dokumen..."
-                    className="pl-9 pr-8 py-1.5 bg-white/10 text-white placeholder-white/60 text-xs rounded-xl border border-white/20 focus:outline-none focus:bg-white/20 transition-all font-sans"
-                  />
-                  {mdSearchQuery && (
-                    <button
-                      onClick={() => setMdSearchQuery('')}
-                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-white/60 hover:text-white"
-                    >
-                      <X className="w-3.5 h-3.5" />
-                    </button>
-                  )}
-                </div>
-                <button
-                  onClick={() => setFullMdDoc(null)}
-                  className="p-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200"
-                >
-                  <X className="w-5 h-5" />
-                </button>
+              {/* TOP RIGHT ABSOLUTE CLOSE BUTTON */}
+              <button
+                onClick={() => setFullMdDoc(null)}
+                className="absolute right-3 top-3 p-2 rounded-xl text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200"
+                title="Tutup Reader"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              {/* FULL-WIDTH SEARCH BAR ON SECOND ROW */}
+              <div className="relative w-full">
+                <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  value={mdSearchQuery}
+                  onChange={(e) => setMdSearchQuery(e.target.value)}
+                  placeholder="Cari kata di dokumen..."
+                  className="w-full pl-9 pr-8 py-2 bg-white/10 text-white placeholder-white/60 text-xs rounded-xl border border-white/20 focus:outline-none focus:bg-white/20 transition-all font-sans"
+                />
+                {mdSearchQuery && (
+                  <button
+                    onClick={() => setMdSearchQuery('')}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-white/60 hover:text-white"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
               </div>
             </div>
 
@@ -1337,45 +1348,56 @@ export default function App() {
       {officialDocsModalOpen && (
         <div className="fixed inset-0 z-50 bg-[#0F172A]/50 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6">
           <div className="bg-white rounded-2xl border border-[#E2E8F0] shadow-2xl max-w-3xl w-full max-h-[85vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
-            {/* HEADER WITH REAL-TIME SEARCH BAR */}
-            <div className="p-4 border-b border-[#E2E8F0] bg-[#22489E] text-white flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-white text-[#22489E] flex items-center justify-center font-bold font-display">
-                  <FolderOpen className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="text-base font-bold font-display">
-                    Pusat Dokumen & Brosur Resmi UII (PDF / DOCX)
-                  </h3>
-                  <p className="text-xs text-[#BDCDEA]">
-                    Daftar lengkap berkas panduan, form pendaftaran, dan brosur resmi PMB UII
-                  </p>
+            {/* HEADER WITH PERFECT MOBILE RESPONSIVENESS & TOP-RIGHT CLOSE BUTTON */}
+            <div className="p-4 border-b border-[#E2E8F0] bg-[#22489E] text-white relative flex flex-col gap-3">
+              <div className="flex items-start justify-between gap-3 pr-10">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-white text-[#22489E] flex items-center justify-center font-bold font-display flex-shrink-0 shadow-xs">
+                    <FolderOpen className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm sm:text-base font-bold font-display leading-snug">
+                      Pusat Dokumen & Brosur Resmi UII (PDF / DOCX)
+                    </h3>
+                    <p className="text-[11px] sm:text-xs text-[#BDCDEA] mt-0.5">
+                      Daftar lengkap berkas panduan, form pendaftaran, dan brosur resmi PMB UII
+                    </p>
+                  </div>
                 </div>
               </div>
 
-              {/* SEARCH BAR */}
-              <div className="flex items-center gap-2">
-                <div className="relative">
-                  <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                  <input
-                    type="text"
-                    value={officialDocsSearchQuery}
-                    onChange={(e) => setOfficialDocsSearchQuery(e.target.value)}
-                    placeholder="Cari brosur/dokumen..."
-                    className="pl-9 pr-3 py-1.5 bg-white/10 text-white placeholder-white/60 text-xs rounded-xl border border-white/20 focus:outline-none focus:bg-white/20 transition-all font-sans"
-                  />
-                </div>
-                <button
-                  onClick={() => setOfficialDocsModalOpen(false)}
-                  className="p-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200"
-                >
-                  <X className="w-5 h-5" />
-                </button>
+              {/* TOP RIGHT ABSOLUTE CLOSE BUTTON */}
+              <button
+                onClick={() => setOfficialDocsModalOpen(false)}
+                className="absolute right-3 top-3 p-2 rounded-xl text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200"
+                title="Tutup Modal"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              {/* FULL-WIDTH SEARCH BAR ON SECOND ROW */}
+              <div className="relative w-full">
+                <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  value={officialDocsSearchQuery}
+                  onChange={(e) => setOfficialDocsSearchQuery(e.target.value)}
+                  placeholder="Cari brosur/dokumen..."
+                  className="w-full pl-9 pr-8 py-2 bg-white/10 text-white placeholder-white/60 text-xs rounded-xl border border-white/20 focus:outline-none focus:bg-white/20 transition-all font-sans"
+                />
+                {officialDocsSearchQuery && (
+                  <button
+                    onClick={() => setOfficialDocsSearchQuery('')}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-white/60 hover:text-white"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
               </div>
             </div>
 
             {/* DOKUMEN GRID */}
-            <div className="flex-1 overflow-y-auto p-6 bg-[#F8FAFC] space-y-4">
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-[#F8FAFC] space-y-4">
               {loadingOfficialDocs ? (
                 <div className="p-8 text-center text-slate-500 text-xs flex flex-col items-center gap-2">
                   <RefreshCw className="w-5 h-5 animate-spin text-[#22489E]" />
@@ -1423,7 +1445,7 @@ export default function App() {
                       {/* DIRECT DOWNLOAD BUTTON */}
                       <div className="mt-4 pt-3 border-t border-[#E2E8F0] flex items-center justify-between">
                         <a
-                          href={`${API_BASE_URL}${doc.download_url}`}
+                          href={resolveDocUrl(doc.download_url)}
                           download
                           target="_blank"
                           rel="noopener noreferrer"
@@ -1451,46 +1473,60 @@ export default function App() {
       {pdfPreviewModalDoc && (
         <div className="fixed inset-0 z-50 bg-[#0F172A]/60 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6">
           <div className="bg-white rounded-2xl border border-[#E2E8F0] shadow-2xl max-w-5xl w-full max-h-[92vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
-            <div className="p-4 border-b border-[#E2E8F0] bg-[#22489E] text-white flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-white text-[#22489E] flex items-center justify-center font-bold font-display">
+            <div className="p-4 border-b border-[#E2E8F0] bg-[#22489E] text-white relative flex items-center justify-between">
+              <div className="flex items-center gap-3 pr-10">
+                <div className="w-10 h-10 rounded-xl bg-white text-[#22489E] flex items-center justify-center font-bold font-display flex-shrink-0 shadow-xs">
                   <Eye className="w-5 h-5" />
                 </div>
                 <div>
                   <span className="text-[10px] font-bold uppercase tracking-wider text-[#22489E] bg-[#BDCDEA] px-2.5 py-0.5 rounded-full font-display">
                     INLINE PDF PREVIEW VIEWER
                   </span>
-                  <h3 className="text-sm sm:text-base font-bold font-display mt-0.5">
+                  <h3 className="text-sm sm:text-base font-bold font-display mt-0.5 leading-snug">
                     {pdfPreviewModalDoc.title} ({pdfPreviewModalDoc.type})
                   </h3>
                 </div>
               </div>
               <button
                 onClick={() => setPdfPreviewModalDoc(null)}
-                className="p-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200"
+                className="absolute right-3 top-3 p-2 rounded-xl text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200"
+                title="Tutup Viewer"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            {/* IFRAME PDF VIEWER CANVAS */}
-            <div className="flex-1 bg-[#F8FAFC] p-4 flex flex-col">
+            {/* IFRAME PDF VIEWER CANVAS WITH GOOGLE DOCS VIEWER EMBEDDER & DIRECT LINK */}
+            <div className="flex-1 bg-[#F8FAFC] p-3 sm:p-4 flex flex-col min-h-[450px]">
               <iframe
-                src={`${API_BASE_URL}${pdfPreviewModalDoc.download_url}`}
+                src={`https://docs.google.com/gview?url=${encodeURIComponent(resolveDocUrl(pdfPreviewModalDoc.download_url))}&embedded=true`}
                 title={pdfPreviewModalDoc.title}
-                className="w-full flex-1 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] shadow-xs min-h-[550px]"
+                className="w-full flex-1 rounded-xl border border-[#E2E8F0] bg-white shadow-xs min-h-[450px] sm:min-h-[550px]"
               />
             </div>
 
-            <div className="p-4 border-t border-[#E2E8F0] bg-white flex items-center justify-between text-xs font-display">
-              <a
-                href={`${API_BASE_URL}${pdfPreviewModalDoc.download_url}`}
-                download
-                className="px-4 py-2 rounded-xl bg-[#22489E] text-white font-bold hover:bg-[#1E3A8A] transition-all duration-200 flex items-center gap-1.5"
-              >
-                <Download className="w-4 h-4" />
-                <span>Unduh Berkas Ini</span>
-              </a>
+            <div className="p-4 border-t border-[#E2E8F0] bg-white flex items-center justify-between text-xs font-display gap-2">
+              <div className="flex items-center gap-2">
+                <a
+                  href={resolveDocUrl(pdfPreviewModalDoc.download_url)}
+                  download
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3.5 py-2 rounded-xl bg-[#22489E] text-white font-bold hover:bg-[#1E3A8A] transition-all duration-200 flex items-center gap-1.5"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>Unduh PDF</span>
+                </a>
+                <a
+                  href={resolveDocUrl(pdfPreviewModalDoc.download_url)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hidden sm:flex px-3.5 py-2 rounded-xl border border-[#E2E8F0] text-slate-700 font-bold hover:bg-[#F8FAFC] transition-all duration-200 items-center gap-1.5"
+                >
+                  <ExternalLink className="w-4 h-4 text-[#22489E]" />
+                  <span>Buka Tab Baru</span>
+                </a>
+              </div>
               <button
                 onClick={() => setPdfPreviewModalDoc(null)}
                 className="px-4 py-2 rounded-xl bg-[#EFEEF1] text-[#0F172A] font-bold hover:bg-[#E2E8F0] transition-all duration-200"
