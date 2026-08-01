@@ -99,7 +99,6 @@ def _patched_create_app(*args, **kwargs):
                 "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
                 "Access-Control-Allow-Headers": "*",
-                "Access-Control-Allow-Private-Network": "true",
             })
 
         # GET /health
@@ -244,7 +243,7 @@ def _patched_create_app(*args, **kwargs):
 
         # Pass through to Gradio for all other routes
         response = await call_next(request)
-        response.headers["Access-Control-Allow-Private-Network"] = "true"
+        response.headers["Access-Control-Allow-Origin"] = "*"
         response.headers["X-Content-Type-Options"] = "nosniff"
         return response
 
