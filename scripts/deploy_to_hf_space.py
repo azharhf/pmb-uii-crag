@@ -121,6 +121,23 @@ def _patched_create_app(*args, **kwargs):
                 mc[m] = mc.get(m, 0) + 1
             return _JSON({"total_chunks": len(backend.knowledge_base_sections), "modules_breakdown": mc})
 
+        # GET /api/official_documents
+        if method == "GET" and path == "/api/official_documents":
+            try:
+                return _JSON(backend.get_official_documents())
+            except Exception as e:
+                return _JSON({"error": str(e)}, status_code=500)
+
+        # GET /api/document/{module_name}
+        if method == "GET" and (path.startswith("/api/document/") or "/api/document" in path):
+            parts = path.split("/api/document/")
+            mod_param = parts[-1].strip() if len(parts) > 1 else ""
+            try:
+                doc_res = backend.get_full_document(mod_param)
+                return _JSON(doc_res)
+            except Exception as e:
+                return _JSON({"error": str(e)}, status_code=404)
+
         # POST /api/chat
         if method == "POST" and path in ("/api/chat", "/api/v1/chat", "/api/rag/chat"):
             try:
