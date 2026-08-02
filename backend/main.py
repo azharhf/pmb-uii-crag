@@ -163,78 +163,42 @@ if os.path.exists(unduh_dir):
 @app.get("/api/official_documents")
 def get_official_documents():
     """Returns a complete list of all official PDF and DOCX documents hosted on Supabase Storage CDN."""
+    supabase_base = "https://idrhzigiaewgtqexfgbj.supabase.co/storage/v1/object/public/pmb-documents"
+    if s_url:
+        supabase_base = f"{s_url.rstrip('/')}/storage/v1/object/public/pmb-documents"
+
+    # Direct Curated Manifest for Supabase Storage CDN
+    official_manifest = [
+        ("Brosur Fakultas Kedokteran FK UII", "2024-Brosur-FK.pdf", "Brosur PDF Resmi", "PDF", "1.85 MB", f"{supabase_base}/pdf/2024-Brosur-FK.pdf"),
+        ("Brosur Fakultas Hukum FH UII", "2024-Brosur-FH.pdf", "Brosur PDF Resmi", "PDF", "2.10 MB", f"{supabase_base}/pdf/2024-Brosur-FH.pdf"),
+        ("Brosur Fakultas Ilmu Agama Islam FIAI UII", "Brosur FIAI 25_26.pdf", "Brosur PDF Resmi", "PDF", "1.92 MB", f"{supabase_base}/pdf/Brosur%20FIAI%2025_26.pdf"),
+        ("Brosur Fakultas MIPA FMIPA UII", "2024-Brosur-FMIPA-1.pdf", "Brosur PDF Resmi", "PDF", "2.34 MB", f"{supabase_base}/pdf/2024-Brosur-FMIPA-1.pdf"),
+        ("Brosur Fakultas Psikologi FPSB UII", "Brosur-FPSB.pdf", "Brosur PDF Resmi", "PDF", "2.05 MB", f"{supabase_base}/pdf/Brosur-FPSB.pdf"),
+        ("Brosur Fakultas Teknik Sipil FTSP UII", "2024-Brosur-FTSP-1.pdf", "Brosur PDF Resmi", "PDF", "2.48 MB", f"{supabase_base}/pdf/2024-Brosur-FTSP-1.pdf"),
+        ("Brosur Fakultas Teknologi Industri FTI UII", "Brosur FTI 25_26.pdf", "Brosur PDF Resmi", "PDF", "2.61 MB", f"{supabase_base}/pdf/Brosur%20FTI%2025_26.pdf"),
+        ("Brosur Fakultas Bisnis dan Ekonomika FBE UII", "Brosur FBE 25_26.pdf", "Brosur PDF Resmi", "PDF", "2.23 MB", f"{supabase_base}/pdf/Brosur%20FBE%2025_26.pdf"),
+        ("Brosur Panduan Umum PMB UII 2026", "Brosur-UII-170126.pdf", "Brosur PDF Resmi", "PDF", "1.81 MB", f"{supabase_base}/pdf/Brosur-UII-170126.pdf"),
+        ("Brosur Program Pascasarjana Profesi UII", "030226-Brosur-Pasca-sarjana.pdf", "Brosur PDF Resmi", "PDF", "1.94 MB", f"{supabase_base}/pdf/030226-Brosur-Pasca-sarjana.pdf"),
+        ("Surat Pernyataan Rapor Kedokteran Mandiri 2026", "Surat-Pernyataan-Rapor-Kedokteran-Mandiri-2026-2.pdf", "Panduan & Form Pendaftaran", "PDF", "0.45 MB", f"{supabase_base}/unduh/pdf/Surat-Pernyataan-Rapor-Kedokteran-Mandiri-2026-2.pdf"),
+        ("Surat Pernyataan Tes Kedokteran Mandiri 2026", "Surat-Pernyataan-Tes-Kedokteran-Mandiri-2026.pdf", "Panduan & Form Pendaftaran", "PDF", "0.42 MB", f"{supabase_base}/unduh/pdf/Surat-Pernyataan-Tes-Kedokteran-Mandiri-2026.pdf"),
+        ("Form Asesmen Diri Beasiswa Atlet dan Juara Seni", "Form-Asesmen-Diri-Beasiswa-Atlet-dan-Juara-Seni.docx", "Panduan & Form Pendaftaran", "DOCX", "0.15 MB", f"{supabase_base}/unduh/docx/Form-Asesmen-Diri-Beasiswa-Atlet-dan-Juara-Seni.docx"),
+        ("Form Asesmen Diri Beasiswa Hafizah Hafiz", "Form-Asesmen-Diri-Beasiswa-Hafizah-Hafiz.docx", "Panduan & Form Pendaftaran", "DOCX", "0.18 MB", f"{supabase_base}/unduh/docx/Form-Asesmen-Diri-Beasiswa-Hafizah-Hafiz.docx"),
+        ("Form Asesmen Diri Jalur Beasiswa Afirmasi", "Form-Asesmen-Diri-Jalur-Beasiswa-Afirmasi.docx", "Panduan & Form Pendaftaran", "DOCX", "0.16 MB", f"{supabase_base}/unduh/docx/Form-Asesmen-Diri-Jalur-Beasiswa-Afirmasi.docx"),
+        ("Form Asesmen Diri Jalur Beasiswa Santri", "Form-Asesmen-Diri-Jalur-Beasiswa-Santri.docx", "Panduan & Form Pendaftaran", "DOCX", "0.17 MB", f"{supabase_base}/unduh/docx/Form-Asesmen-Diri-Jalur-Beasiswa-Santri.docx"),
+        ("Surat Pernyataan Komitmen 2026", "Surat-Pernyataan-Komitmen-2026.docx", "Panduan & Form Pendaftaran", "DOCX", "0.12 MB", f"{supabase_base}/unduh/docx/Surat-Pernyataan-Komitmen-2026.docx"),
+        ("Surat Pernyataan MABA Keabsahan Dokumen", "SURAT-PERNYATAAN-MABA.docx", "Panduan & Form Pendaftaran", "DOCX", "0.14 MB", f"{supabase_base}/unduh/docx/SURAT-PERNYATAAN-MABA.docx"),
+    ]
+
     docs = []
-    sup_url = os.environ.get("SUPABASE_URL", "") or s_url or "https://idrhzigiaewgtqexfgbj.supabase.co"
-    supabase_base = f"{sup_url.rstrip('/')}/storage/v1/object/public/pmb-documents"
-    
-    # 1. PDF Brochures
-    if os.path.exists(pdf_dir):
-        for f in sorted(os.listdir(pdf_dir)):
-            if f.lower().endswith(".pdf"):
-                fpath = os.path.join(pdf_dir, f)
-                size_mb = round(os.path.getsize(fpath) / (1024 * 1024), 2)
-                clean_title = f.replace(".pdf", "").replace("-", " ").replace("_", " ").title()
-                dl_url = f"{supabase_base}/pdf/{f}" if supabase_base else f"/downloads/pdf/{f}"
-                docs.append({
-                    "title": clean_title,
-                    "filename": f,
-                    "category": "Brosur PDF Resmi",
-                    "type": "PDF",
-                    "size": f"{size_mb} MB",
-                    "download_url": dl_url
-                })
-
-    # 2. Unduh Dokumen (PDF & DOCX)
-    if os.path.exists(unduh_dir):
-        for root, dirs, files in os.walk(unduh_dir):
-            for f in sorted(files):
-                if f.lower().endswith((".pdf", ".docx", ".doc")):
-                    fpath = os.path.join(root, f)
-                    rel_path = os.path.relpath(fpath, unduh_dir).replace("\\", "/")
-                    size_mb = round(os.path.getsize(fpath) / (1024 * 1024), 2)
-                    clean_title = f.replace(".pdf", "").replace(".docx", "").replace(".doc", "").replace("-", " ").replace("_", " ").title()
-                    ext = "PDF" if f.lower().endswith(".pdf") else "DOCX"
-                    dl_url = f"{supabase_base}/unduh/{rel_path}" if supabase_base else f"/downloads/unduh/{rel_path}"
-                    docs.append({
-                        "title": clean_title,
-                        "filename": f,
-                        "category": "Panduan & Form Pendaftaran",
-                        "type": ext,
-                        "size": f"{size_mb} MB",
-                        "download_url": dl_url
-                    })
-
-    # 3. Fallback Manifest when local raw files are not packaged in cloud deployment
-    if not docs and supabase_base:
-        official_manifest = [
-            ("Brosur Fakultas Kedokteran FK UII", "2024-Brosur-FK.pdf", "Brosur PDF Resmi", "PDF", "1.85 MB", f"{supabase_base}/pdf/2024-Brosur-FK.pdf"),
-            ("Brosur Fakultas Hukum FH UII", "2024-Brosur-FH.pdf", "Brosur PDF Resmi", "PDF", "2.10 MB", f"{supabase_base}/pdf/2024-Brosur-FH.pdf"),
-            ("Brosur Fakultas Ilmu Agama Islam FIAI UII", "Brosur FIAI 25_26.pdf", "Brosur PDF Resmi", "PDF", "1.92 MB", f"{supabase_base}/pdf/Brosur FIAI 25_26.pdf"),
-            ("Brosur Fakultas MIPA FMIPA UII", "2024-Brosur-FMIPA-1.pdf", "Brosur PDF Resmi", "PDF", "2.34 MB", f"{supabase_base}/pdf/2024-Brosur-FMIPA-1.pdf"),
-            ("Brosur Fakultas Psikologi FPSB UII", "Brosur-FPSB.pdf", "Brosur PDF Resmi", "PDF", "2.05 MB", f"{supabase_base}/pdf/Brosur-FPSB.pdf"),
-            ("Brosur Fakultas Teknik Sipil FTSP UII", "2024-Brosur-FTSP-1.pdf", "Brosur PDF Resmi", "PDF", "2.48 MB", f"{supabase_base}/pdf/2024-Brosur-FTSP-1.pdf"),
-            ("Brosur Fakultas Teknologi Industri FTI UII", "Brosur FTI 25_26.pdf", "Brosur PDF Resmi", "PDF", "2.61 MB", f"{supabase_base}/pdf/Brosur FTI 25_26.pdf"),
-            ("Brosur Fakultas Bisnis dan Ekonomika FBE UII", "Brosur FBE 25_26.pdf", "Brosur PDF Resmi", "PDF", "2.23 MB", f"{supabase_base}/pdf/Brosur FBE 25_26.pdf"),
-            ("Brosur Panduan Umum PMB UII 2026", "Brosur-UII-170126.pdf", "Brosur PDF Resmi", "PDF", "1.81 MB", f"{supabase_base}/pdf/Brosur-UII-170126.pdf"),
-            ("Brosur Program Pascasarjana Profesi UII", "030226-Brosur-Pasca-sarjana.pdf", "Brosur PDF Resmi", "PDF", "1.94 MB", f"{supabase_base}/pdf/030226-Brosur-Pasca-sarjana.pdf"),
-            ("Surat Pernyataan Rapor Kedokteran Mandiri 2026", "Surat-Pernyataan-Rapor-Kedokteran-Mandiri-2026-2.pdf", "Panduan & Form Pendaftaran", "PDF", "0.45 MB", f"{supabase_base}/unduh/pdf/Surat-Pernyataan-Rapor-Kedokteran-Mandiri-2026-2.pdf"),
-            ("Surat Pernyataan Tes Kedokteran Mandiri 2026", "Surat-Pernyataan-Tes-Kedokteran-Mandiri-2026.pdf", "Panduan & Form Pendaftaran", "PDF", "0.42 MB", f"{supabase_base}/unduh/pdf/Surat-Pernyataan-Tes-Kedokteran-Mandiri-2026.pdf"),
-            ("Form Asesmen Diri Beasiswa Atlet dan Juara Seni", "Form-Asesmen-Diri-Beasiswa-Atlet-dan-Juara-Seni.docx", "Panduan & Form Pendaftaran", "DOCX", "0.15 MB", f"{supabase_base}/unduh/docx/Form-Asesmen-Diri-Beasiswa-Atlet-dan-Juara-Seni.docx"),
-            ("Form Asesmen Diri Beasiswa Hafizah Hafiz", "Form-Asesmen-Diri-Beasiswa-Hafizah-Hafiz.docx", "Panduan & Form Pendaftaran", "DOCX", "0.18 MB", f"{supabase_base}/unduh/docx/Form-Asesmen-Diri-Beasiswa-Hafizah-Hafiz.docx"),
-            ("Form Asesmen Diri Jalur Beasiswa Afirmasi", "Form-Asesmen-Diri-Jalur-Beasiswa-Afirmasi.docx", "Panduan & Form Pendaftaran", "DOCX", "0.16 MB", f"{supabase_base}/unduh/docx/Form-Asesmen-Diri-Jalur-Beasiswa-Afirmasi.docx"),
-            ("Form Asesmen Diri Jalur Beasiswa Santri", "Form-Asesmen-Diri-Jalur-Beasiswa-Santri.docx", "Panduan & Form Pendaftaran", "DOCX", "0.17 MB", f"{supabase_base}/unduh/docx/Form-Asesmen-Diri-Jalur-Beasiswa-Santri.docx"),
-            ("Surat Pernyataan Komitmen 2026", "Surat-Pernyataan-Komitmen-2026.docx", "Panduan & Form Pendaftaran", "DOCX", "0.12 MB", f"{supabase_base}/unduh/docx/Surat-Pernyataan-Komitmen-2026.docx"),
-            ("Surat Pernyataan MABA Keabsahan Dokumen", "SURAT-PERNYATAAN-MABA.docx", "Panduan & Form Pendaftaran", "DOCX", "0.14 MB", f"{supabase_base}/unduh/docx/SURAT-PERNYATAAN-MABA.docx"),
-        ]
-        for title, fname, cat, ftype, sz, url in official_manifest:
-            docs.append({
-                "title": title,
-                "filename": fname,
-                "category": cat,
-                "type": ftype,
-                "size": sz,
-                "download_url": url
-            })
+    for title, fname, cat, ftype, sz, url in official_manifest:
+        docs.append({
+            "title": title,
+            "filename": fname,
+            "category": cat,
+            "type": ftype,
+            "size": sz,
+            "download_url": url
+        })
 
     return {"total": len(docs), "documents": docs}
 
@@ -495,18 +459,20 @@ MODULE_FILE_MAP = {
     "KONTAK": ("kontak", "kontak_knowledge_base.md"),
     "FAQ": ("faq", "faq_knowledge_base.md"),
     "PEMBAYARAN": ("pembayaran", "pembayaran_knowledge_base.md"),
-    "UNDUH_DOKUMEN": ("unduh_dokumen", "unduh_dokumen_knowledge_base.md"),
-    "CONTOH_SOAL": ("contoh_soal", "contoh_soal_knowledge_base.md"),
+    "UNDUH_DOKUMEN": ("unduh_dokumen", "unduh_knowledge_base.md"),
+    "UNDUH": ("unduh_dokumen", "unduh_knowledge_base.md"),
+    "CONTOH_SOAL": ("contoh_soal", "soal_knowledge_base.md"),
+    "SOAL": ("contoh_soal", "soal_knowledge_base.md"),
 }
 
 
 @app.get("/api/document/{module_name}")
 def get_full_document(module_name: str):
-    clean_mod = module_name.split(":")[0].split("-")[0].upper().strip()
+    clean_mod = module_name.split(":")[0].upper().strip()
     if clean_mod not in MODULE_FILE_MAP:
         matched_key = None
         for k in MODULE_FILE_MAP:
-            if k in clean_mod or clean_mod in k:
+            if k == clean_mod or k in clean_mod or clean_mod in k:
                 matched_key = k
                 break
         if matched_key:
@@ -519,31 +485,45 @@ def get_full_document(module_name: str):
         folder, fname = MODULE_FILE_MAP[clean_mod]
         mod_key = clean_mod
 
-    # 1. Try loading from Supabase Storage CDN first
+    # 1. Try loading from Supabase Storage CDN first with User-Agent header
     content = None
     sup_url = os.environ.get("SUPABASE_URL", "") or s_url or "https://idrhzigiaewgtqexfgbj.supabase.co"
     supabase_cdn = f"{sup_url.rstrip('/')}/storage/v1/object/public/pmb-documents/master_md/{fname}"
-    if supabase_cdn:
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+
+    try:
+        import requests
+        r = requests.get(supabase_cdn, headers=headers, timeout=10)
+        if r.status_code == 200 and r.text:
+            content = r.text
+    except Exception as e:
+        print(f"[!] Supabase CDN fetch error for {fname}: {e}")
+
+    # 2. Fallback to local disk
+    if content is None:
+        file_path = os.path.join(base_dir, "data", "processed", folder, fname)
+        if os.path.exists(file_path):
+            with open(file_path, "r", encoding="utf-8") as f:
+                content = f.read()
+
+    # 3. Direct Hardcoded CDN Retry Fallback
+    if content is None:
         try:
             import requests
-            r = requests.get(supabase_cdn, timeout=4)
-            if r.status_code == 200:
+            direct_url = f"https://idrhzigiaewgtqexfgbj.supabase.co/storage/v1/object/public/pmb-documents/master_md/{fname}"
+            r = requests.get(direct_url, headers=headers, timeout=12)
+            if r.status_code == 200 and r.text:
                 content = r.text
         except Exception:
             pass
 
-    # 2. Fallback to local disk
-    file_path = os.path.join(base_dir, "data", "processed", folder, fname)
     if content is None:
-        if not os.path.exists(file_path):
-            raise HTTPException(status_code=404, detail=f"Document file {fname} not found.")
-        with open(file_path, "r", encoding="utf-8") as f:
-            content = f.read()
+        raise HTTPException(status_code=404, detail=f"Document file {fname} not found.")
 
     return {
         "module": mod_key,
         "filename": fname,
-        "file_path": supabase_cdn or file_path,
+        "file_path": supabase_cdn,
         "total_chars": len(content),
         "content": content
     }

@@ -132,6 +132,35 @@ export default function App() {
     }
   };
 
+  const handleDirectDownload = (e, fileUrl, fileName) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    if (!fileUrl) return;
+
+    let targetName = fileName || 'dokumen_pmb_uii.pdf';
+    if (!targetName.includes('.')) {
+      targetName += '.pdf';
+    }
+
+    let downloadUrl = fileUrl;
+    if (downloadUrl.includes('supabase.co/storage/v1/object/public/')) {
+      const sep = downloadUrl.includes('?') ? '&' : '?';
+      downloadUrl = `${downloadUrl}${sep}download=${encodeURIComponent(targetName)}`;
+    }
+
+    const iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = downloadUrl;
+    document.body.appendChild(iframe);
+    setTimeout(() => {
+      try {
+        document.body.removeChild(iframe);
+      } catch (err) {}
+    }, 6000);
+  };
+
   const handleOpenOfficialDocsHub = () => {
     setOfficialDocsSearchQuery('');
     setOfficialDocsModalOpen(true);
@@ -1443,18 +1472,15 @@ export default function App() {
                         </button>
                       </div>
 
-                      {/* DIRECT DOWNLOAD BUTTON */}
+                      {/* DIRECT INSTANT DOWNLOAD BUTTON */}
                       <div className="mt-4 pt-3 border-t border-[#E2E8F0] flex items-center justify-between">
-                        <a
-                          href={resolveDocUrl(doc.download_url)}
-                          download
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="w-full px-3 py-2 rounded-xl bg-[#22489E] hover:bg-[#1E3A8A] text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-all duration-200 font-display"
+                        <button
+                          onClick={(e) => handleDirectDownload(e, resolveDocUrl(doc.download_url), doc.name || `${doc.title}.${(doc.type || 'pdf').toLowerCase()}`)}
+                          className="w-full px-3 py-2 rounded-xl bg-[#22489E] hover:bg-[#1E3A8A] text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-all duration-200 font-display cursor-pointer"
                         >
                           <Download className="w-4 h-4" />
                           <span>Download ({doc.type})</span>
-                        </a>
+                        </button>
                       </div>
                     </div>
                   ))}
@@ -1470,7 +1496,7 @@ export default function App() {
         </div>
       )}
 
-      {/* MODAL 4: INLINE PDF PREVIEW VIEWER MODAL */}
+      {/* MODAL 4: INLINE PDF & WORD PREVIEW VIEWER MODAL */}
       {pdfPreviewModalDoc && (
         <div className="fixed inset-0 z-50 bg-[#0F172A]/60 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6">
           <div className="bg-white rounded-2xl border border-[#E2E8F0] shadow-2xl max-w-5xl w-full max-h-[92vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
@@ -1481,7 +1507,7 @@ export default function App() {
                 </div>
                 <div>
                   <span className="text-[10px] font-bold uppercase tracking-wider text-[#22489E] bg-[#BDCDEA] px-2.5 py-0.5 rounded-full font-display">
-                    INLINE PDF PREVIEW VIEWER
+                    INLINE {pdfPreviewModalDoc.type?.toUpperCase()} VIEWER
                   </span>
                   <h3 className="text-sm sm:text-base font-bold font-display mt-0.5 leading-snug">
                     {pdfPreviewModalDoc.title} ({pdfPreviewModalDoc.type})
@@ -1497,46 +1523,42 @@ export default function App() {
               </button>
             </div>
 
-            {/* HIGH-PERFORMANCE NATIVE PDF VIEWER WITH GOOGLE DOCS VIEWER FALLBACK */}
+            {/* HIGH-PERFORMANCE NATIVE VIEWER FOR PDF & MOBILE WORD DOCX/DOC */}
             <div className="flex-1 bg-[#F8FAFC] p-3 sm:p-4 flex flex-col min-h-[450px]">
-              <object
-                data={resolveDocUrl(pdfPreviewModalDoc.download_url)}
-                type="application/pdf"
-                className="w-full flex-1 rounded-xl border border-[#E2E8F0] bg-white shadow-xs min-h-[450px] sm:min-h-[550px]"
-              >
+              {pdfPreviewModalDoc.type?.toUpperCase() === 'PDF' ? (
+                <object
+                  data={resolveDocUrl(pdfPreviewModalDoc.download_url)}
+                  type="application/pdf"
+                  className="w-full flex-1 rounded-xl border border-[#E2E8F0] bg-white shadow-xs min-h-[450px] sm:min-h-[550px]"
+                >
+                  <iframe
+                    src={`https://docs.google.com/gview?url=${encodeURIComponent(resolveDocUrl(pdfPreviewModalDoc.download_url))}&embedded=true`}
+                    title={pdfPreviewModalDoc.title}
+                    className="w-full flex-1 rounded-xl border border-[#E2E8F0] bg-white shadow-xs min-h-[450px] sm:min-h-[550px]"
+                  />
+                </object>
+              ) : (
                 <iframe
                   src={`https://docs.google.com/gview?url=${encodeURIComponent(resolveDocUrl(pdfPreviewModalDoc.download_url))}&embedded=true`}
                   title={pdfPreviewModalDoc.title}
                   className="w-full flex-1 rounded-xl border border-[#E2E8F0] bg-white shadow-xs min-h-[450px] sm:min-h-[550px]"
                 />
-              </object>
+              )}
             </div>
 
             <div className="p-4 border-t border-[#E2E8F0] bg-white flex items-center justify-between text-xs font-display gap-2">
               <div className="flex items-center gap-2">
-                <a
-                  href={resolveDocUrl(pdfPreviewModalDoc.download_url)}
-                  download
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-3.5 py-2 rounded-xl bg-[#22489E] text-white font-bold hover:bg-[#1E3A8A] transition-all duration-200 flex items-center gap-1.5"
+                <button
+                  onClick={(e) => handleDirectDownload(e, resolveDocUrl(pdfPreviewModalDoc.download_url), pdfPreviewModalDoc.name || `${pdfPreviewModalDoc.title}.${(pdfPreviewModalDoc.type || 'pdf').toLowerCase()}`)}
+                  className="px-3.5 py-2 rounded-xl bg-[#22489E] text-white font-bold hover:bg-[#1E3A8A] transition-all duration-200 flex items-center gap-1.5 cursor-pointer"
                 >
                   <Download className="w-4 h-4" />
-                  <span>Unduh PDF</span>
-                </a>
-                <a
-                  href={resolveDocUrl(pdfPreviewModalDoc.download_url)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hidden sm:flex px-3.5 py-2 rounded-xl border border-[#E2E8F0] text-slate-700 font-bold hover:bg-[#F8FAFC] transition-all duration-200 items-center gap-1.5"
-                >
-                  <ExternalLink className="w-4 h-4 text-[#22489E]" />
-                  <span>Buka Tab Baru</span>
-                </a>
+                  <span>Unduh Berkas ({pdfPreviewModalDoc.type})</span>
+                </button>
               </div>
               <button
                 onClick={() => setPdfPreviewModalDoc(null)}
-                className="px-4 py-2 rounded-xl bg-[#EFEEF1] text-[#0F172A] font-bold hover:bg-[#E2E8F0] transition-all duration-200"
+                className="px-4 py-2 rounded-xl bg-[#EFEEF1] text-[#0F172A] font-bold hover:bg-[#E2E8F0] transition-all duration-200 cursor-pointer"
               >
                 Selesai Membaca
               </button>
