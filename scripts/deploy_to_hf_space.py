@@ -409,11 +409,9 @@ def create_kb_treemap_chart():
     )
     return fig
 
-def create_crag_flowchart():
-    fig = go.Figure()
-    
+def create_crag_flowchart(active_path: str = "DIRECT"):
     node_x = [0.05, 0.25, 0.45, 0.75, 0.55, 0.95]
-    node_y = [0.5, 0.5, 0.5, 0.8, 0.2, 0.8]
+    node_y = [0.5,  0.5,  0.5,  0.75, 0.25, 0.75]
     node_text = [
         "Kueri Pengguna", 
         "Security Firewall", 
@@ -422,42 +420,89 @@ def create_crag_flowchart():
         "Low Confidence (< 0.25)", 
         "HyDE Re-Retrieval"
     ]
-    node_colors = ["#3B82F6", "#EC4899", "#6366F1", "#10B981", "#F59E0B", "#8B5CF6"]
+    node_codes = ["START", "FIREWALL", "RRF", "HIGH_CONF", "LOW_CONF", "HYDE"]
+    base_colors = ["#3B82F6", "#EC4899", "#6366F1", "#10B981", "#F59E0B", "#8B5CF6"]
 
-    edge_x = []
-    edge_y = []
-    edges = [(0, 1), (1, 2), (2, 3), (2, 4), (4, 5)]
-    for e in edges:
-        edge_x.extend([node_x[e[0]], node_x[e[1]], None])
-        edge_y.extend([node_y[e[0]], node_y[e[1]], None])
+    if active_path == "HYDE":
+        active_nodes = {"START", "FIREWALL", "RRF", "LOW_CONF", "HYDE"}
+        active_edges = [("START", "FIREWALL"), ("FIREWALL", "RRF"), ("RRF", "LOW_CONF"), ("LOW_CONF", "HYDE")]
+        path_label = "⚡ JALUR EKSEKUSI REAL-TIME: LOW CONFIDENCE -> HYDE RE-RETRIEVAL"
+        active_color = "#F59E0B"
+    elif active_path == "BLOCKED":
+        active_nodes = {"START", "FIREWALL"}
+        active_edges = [("START", "FIREWALL")]
+        path_label = "⛔ JALUR EKSEKUSI REAL-TIME: FIREWALL INTERCEPTION (BLOCKED)"
+        active_color = "#EC4899"
+    else:
+        active_nodes = {"START", "FIREWALL", "RRF", "HIGH_CONF"}
+        active_edges = [("START", "FIREWALL"), ("FIREWALL", "RRF"), ("RRF", "HIGH_CONF")]
+        path_label = "✅ JALUR EKSEKUSI REAL-TIME: DIRECT HIGH CONFIDENCE PASS"
+        active_color = "#10B981"
 
-    fig.add_trace(go.Scatter(
-        x=edge_x, y=edge_y,
-        mode='lines',
-        line=dict(color='#4B5563', width=2),
-        hoverinfo='none'
-    ))
+    all_edges = [
+        ("START", "FIREWALL", 0.05, 0.5, 0.25, 0.5),
+        ("FIREWALL", "RRF", 0.25, 0.5, 0.45, 0.5),
+        ("RRF", "HIGH_CONF", 0.45, 0.5, 0.75, 0.75),
+        ("RRF", "LOW_CONF", 0.45, 0.5, 0.55, 0.25),
+        ("LOW_CONF", "HYDE", 0.55, 0.25, 0.95, 0.75)
+    ]
+    
+    fig = go.Figure()
+
+    for src, dst, x0, y0, x1, y1 in all_edges:
+        is_active = (src, dst) in active_edges
+        edge_color = active_color if is_active else "#374151"
+        edge_width = 4.5 if is_active else 1.5
+        edge_dash = "solid" if is_active else "dot"
+        fig.add_trace(go.Scatter(
+            x=[x0, x1], y=[y0, y1],
+            mode="lines",
+            line=dict(color=edge_color, width=edge_width, dash=edge_dash),
+            hoverinfo="none",
+            showlegend=False
+        ))
+
+    sizes = []
+    colors = []
+    line_widths = []
+    line_colors = []
+    
+    for code, col in zip(node_codes, base_colors):
+        if code in active_nodes:
+            sizes.append(34)
+            colors.append(col)
+            line_widths.append(4)
+            line_colors.append("#FFFFFF")
+        else:
+            sizes.append(20)
+            colors.append("#374151")
+            line_widths.append(1)
+            line_colors.append("#6B7280")
 
     fig.add_trace(go.Scatter(
         x=node_x, y=node_y,
-        mode='markers+text',
-        marker=dict(size=36, color=node_colors, line=dict(color='#FFFFFF', width=1.5)),
+        mode="markers+text",
         text=node_text,
         textposition="top center",
-        textfont=dict(color='#F3F4F6', size=12),
-        hoverinfo='text'
+        textfont=dict(color="#F3F4F6", size=11, family="Inter, sans-serif"),
+        marker=dict(
+            size=sizes,
+            color=colors,
+            line=dict(color=line_colors, width=line_widths)
+        ),
+        hoverinfo="text",
+        showlegend=False
     ))
 
     fig.update_layout(
-        title="4-Tier Corrective RAG Decision Tree Flowchart",
-        showlegend=False,
-        xaxis=dict(showgrid=False, zeroline=False, showticklabels=False, range=[-0.05, 1.05]),
-        yaxis=dict(showgrid=False, zeroline=False, showticklabels=False, range=[0, 1.0]),
+        title=dict(text=f"4-Tier Corrective RAG Decision Tree Flowchart<br><sub>{path_label}</sub>", font=dict(size=14, color="#F3F4F6")),
+        xaxis=dict(showgrid=False, zeroline=False, showticklabels=False, range=[-0.02, 1.02]),
+        yaxis=dict(showgrid=False, zeroline=False, showticklabels=False, range=[0.05, 0.95]),
         paper_bgcolor="#111827",
         plot_bgcolor="#1F2937",
         font=dict(color="#F3F4F6", family="Inter, sans-serif"),
         height=420,
-        margin=dict(l=40, r=40, t=50, b=40)
+        margin=dict(l=20, r=20, t=60, b=20)
     )
     return fig
 
@@ -684,14 +729,17 @@ def load_kb_module_content(module_name: str):
 def simulate_security_test(test_query: str):
     if not test_query or not test_query.strip():
         empty_gauge = create_threat_gauge_chart("PASSED")
-        return "Masukkan kueri uji coba firewall.", empty_gauge
+        empty_flow = create_crag_flowchart("DIRECT")
+        return "Masukkan kueri uji coba firewall.", empty_gauge, empty_flow
     try:
         backend.validate_security_firewall(test_query.strip())
         gauge_fig = create_threat_gauge_chart("PASSED")
-        return f"**Status:** PASSED (SAFE)\n\nKueri `'{test_query}'` aman dan tidak memicu aturan pemblokiran firewall.", gauge_fig
+        flow_fig = create_crag_flowchart("DIRECT")
+        return f"**Status:** PASSED (SAFE)\n\nKueri `'{test_query}'` aman dan tidak memicu aturan pemblokiran firewall. Jalur eksekusi RAG berjalan normal (High Confidence Pass).", gauge_fig, flow_fig
     except Exception as e:
         gauge_fig = create_threat_gauge_chart("BLOCKED")
-        return f"**Status:** BLOCKED (HTTP 403 FORBIDDEN)\n\nDetail Eror: {str(e)}", gauge_fig
+        flow_fig = create_crag_flowchart("BLOCKED")
+        return f"**Status:** BLOCKED (HTTP 403 FORBIDDEN)\n\nDetail Eror: {str(e)}\n\n*Firewall berhasil mengintersepsi kueri berbahaya di Tier 0.*", gauge_fig, flow_fig
 
 # ──────────────────────────────────────────────────────────────────────────────
 # STEP 2: Create Gradio UI (6 Interactive Enterprise Tabs)
@@ -815,7 +863,7 @@ with gr.Blocks(theme=theme, title="PMB UII AI Academic Assistant") as demo:
             sec_test_btn.click(
                 fn=simulate_security_test,
                 inputs=sec_input,
-                outputs=[sec_output, threat_gauge_out]
+                outputs=[sec_output, threat_gauge_out, crag_flowchart_out]
             )
 
         # TAB 5: SYSTEM BENCHMARKS
