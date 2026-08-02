@@ -425,17 +425,28 @@ def create_crag_flowchart(active_path: str = "DIRECT"):
 
     if active_path == "HYDE":
         active_nodes = {"START", "FIREWALL", "RRF", "LOW_CONF", "HYDE"}
-        active_edges = [("START", "FIREWALL"), ("FIREWALL", "RRF"), ("RRF", "LOW_CONF"), ("LOW_CONF", "HYDE")]
+        active_edges_coords = [
+            ("START", "FIREWALL", 0.05, 0.5, 0.25, 0.5),
+            ("FIREWALL", "RRF", 0.25, 0.5, 0.45, 0.5),
+            ("RRF", "LOW_CONF", 0.45, 0.5, 0.55, 0.25),
+            ("LOW_CONF", "HYDE", 0.55, 0.25, 0.95, 0.75)
+        ]
         path_label = "⚡ JALUR EKSEKUSI REAL-TIME: LOW CONFIDENCE -> HYDE RE-RETRIEVAL"
         active_color = "#F59E0B"
     elif active_path == "BLOCKED":
         active_nodes = {"START", "FIREWALL"}
-        active_edges = [("START", "FIREWALL")]
+        active_edges_coords = [
+            ("START", "FIREWALL", 0.05, 0.5, 0.25, 0.5)
+        ]
         path_label = "⛔ JALUR EKSEKUSI REAL-TIME: FIREWALL INTERCEPTION (BLOCKED)"
         active_color = "#EC4899"
     else:
         active_nodes = {"START", "FIREWALL", "RRF", "HIGH_CONF"}
-        active_edges = [("START", "FIREWALL"), ("FIREWALL", "RRF"), ("RRF", "HIGH_CONF")]
+        active_edges_coords = [
+            ("START", "FIREWALL", 0.05, 0.5, 0.25, 0.5),
+            ("FIREWALL", "RRF", 0.25, 0.5, 0.45, 0.5),
+            ("RRF", "HIGH_CONF", 0.45, 0.5, 0.75, 0.75)
+        ]
         path_label = "✅ JALUR EKSEKUSI REAL-TIME: DIRECT HIGH CONFIDENCE PASS"
         active_color = "#10B981"
 
@@ -449,10 +460,12 @@ def create_crag_flowchart(active_path: str = "DIRECT"):
     
     fig = go.Figure()
 
+    # 1. Draw Edge Lines
+    active_pairs = [(a[0], a[1]) for a in active_edges_coords]
     for src, dst, x0, y0, x1, y1 in all_edges:
-        is_active = (src, dst) in active_edges
+        is_active = (src, dst) in active_pairs
         edge_color = active_color if is_active else "#374151"
-        edge_width = 4.5 if is_active else 1.5
+        edge_width = 5.0 if is_active else 1.5
         edge_dash = "solid" if is_active else "dot"
         fig.add_trace(go.Scatter(
             x=[x0, x1], y=[y0, y1],
@@ -462,6 +475,36 @@ def create_crag_flowchart(active_path: str = "DIRECT"):
             showlegend=False
         ))
 
+    # 2. Draw Directional Arrowheads & Flow Indicators on Active Edges
+    for src, dst, x0, y0, x1, y1 in active_edges_coords:
+        for frac in [0.35, 0.70]:
+            px = x0 + (x1 - x0) * frac
+            py = y0 + (y1 - y0) * frac
+            fig.add_trace(go.Scatter(
+                x=[px], y=[py],
+                mode="text",
+                text=["➤"],
+                textfont=dict(color="#FFFFFF", size=14),
+                hoverinfo="none",
+                showlegend=False
+            ))
+
+    # 3. Outer Glowing Halo Rings for Active Nodes ('Processing Sonar Ring')
+    active_x = [node_x[i] for i, code in enumerate(node_codes) if code in active_nodes]
+    active_y = [node_y[i] for i, code in enumerate(node_codes) if code in active_nodes]
+    fig.add_trace(go.Scatter(
+        x=active_x, y=active_y,
+        mode="markers",
+        marker=dict(
+            size=52,
+            color="rgba(255, 255, 255, 0.15)",
+            line=dict(color=active_color, width=2.5)
+        ),
+        hoverinfo="none",
+        showlegend=False
+    ))
+
+    # 4. Main Nodes
     sizes = []
     colors = []
     line_widths = []
@@ -471,10 +514,10 @@ def create_crag_flowchart(active_path: str = "DIRECT"):
         if code in active_nodes:
             sizes.append(34)
             colors.append(col)
-            line_widths.append(4)
+            line_widths.append(3.5)
             line_colors.append("#FFFFFF")
         else:
-            sizes.append(20)
+            sizes.append(18)
             colors.append("#374151")
             line_widths.append(1)
             line_colors.append("#6B7280")
