@@ -1198,8 +1198,8 @@ export default function App() {
 
       {/* MODAL 1: SECTION CHUNK PREVIEW */}
       {previewDoc && (
-        <div className="fixed inset-0 z-50 bg-[#0F172A]/50 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl border border-[#E2E8F0] shadow-xl max-w-2xl w-full max-h-[85vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+        <div className="fixed inset-0 z-50 bg-[#0F172A]/50 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 py-6 sm:py-8 overflow-y-auto">
+          <div className="bg-white rounded-2xl border border-[#E2E8F0] shadow-xl max-w-2xl w-full max-h-[82dvh] sm:max-h-[85vh] my-auto flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
             <div className="p-4 border-b border-[#E2E8F0] bg-[#F8FAFC] flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-xl bg-[#22489E] text-white flex items-center justify-center font-bold">
@@ -1265,8 +1265,8 @@ export default function App() {
 
       {/* MODAL 2: INTERACTIVE MARKDOWN E-BOOK READER WITH SMART YELLOW HIGHLIGHTING */}
       {fullMdDoc && (
-        <div className="fixed inset-0 z-50 bg-[#0F172A]/50 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6">
-          <div className="bg-white rounded-2xl border border-[#E2E8F0] shadow-2xl max-w-5xl w-full max-h-[92vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+        <div className="fixed inset-0 z-50 bg-[#0F172A]/50 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 py-6 sm:py-8 overflow-y-auto">
+          <div className="bg-white rounded-2xl border border-[#E2E8F0] shadow-2xl max-w-5xl w-full max-h-[82dvh] sm:max-h-[90vh] my-auto flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
             {/* READER E-BOOK HEADER WITH PERFECT MOBILE RESPONSIVENESS & TOP-RIGHT CLOSE BUTTON */}
             <div className="p-4 border-b border-[#E2E8F0] bg-[#22489E] text-white relative flex flex-col gap-3">
               <div className="flex items-start justify-between gap-3 pr-10">
@@ -1376,8 +1376,8 @@ export default function App() {
 
       {/* MODAL 3: PUSAT DOKUMEN RESMI PDF & WORD HUB */}
       {officialDocsModalOpen && (
-        <div className="fixed inset-0 z-50 bg-[#0F172A]/50 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6">
-          <div className="bg-white rounded-2xl border border-[#E2E8F0] shadow-2xl max-w-3xl w-full max-h-[85vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+        <div className="fixed inset-0 z-50 bg-[#0F172A]/50 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 py-6 sm:py-8 overflow-y-auto">
+          <div className="bg-white rounded-2xl border border-[#E2E8F0] shadow-2xl max-w-3xl w-full max-h-[82dvh] sm:max-h-[85vh] my-auto flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
             {/* HEADER WITH PERFECT MOBILE RESPONSIVENESS & TOP-RIGHT CLOSE BUTTON */}
             <div className="p-4 border-b border-[#E2E8F0] bg-[#22489E] text-white relative flex flex-col gap-3">
               <div className="flex items-start justify-between gap-3 pr-10">
@@ -1498,8 +1498,8 @@ export default function App() {
 
       {/* MODAL 4: INLINE PDF & WORD PREVIEW VIEWER MODAL */}
       {pdfPreviewModalDoc && (
-        <div className="fixed inset-0 z-50 bg-[#0F172A]/60 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6">
-          <div className="bg-white rounded-2xl border border-[#E2E8F0] shadow-2xl max-w-5xl w-full max-h-[92vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+        <div className="fixed inset-0 z-50 bg-[#0F172A]/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 py-6 sm:py-8 overflow-y-auto">
+          <div className="bg-white rounded-2xl border border-[#E2E8F0] shadow-2xl max-w-5xl w-full max-h-[82dvh] sm:max-h-[90vh] my-auto flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
             <div className="p-4 border-b border-[#E2E8F0] bg-[#22489E] text-white relative flex items-center justify-between">
               <div className="flex items-center gap-3 pr-10">
                 <div className="w-10 h-10 rounded-xl bg-white text-[#22489E] flex items-center justify-center font-bold font-display flex-shrink-0 shadow-xs">

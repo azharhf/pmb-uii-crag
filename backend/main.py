@@ -494,8 +494,8 @@ def get_full_document(module_name: str):
     try:
         import requests
         r = requests.get(supabase_cdn, headers=headers, timeout=10)
-        if r.status_code == 200 and r.text:
-            content = r.text
+        if r.status_code == 200 and r.content:
+            content = r.content.decode("utf-8", errors="replace")
     except Exception as e:
         print(f"[!] Supabase CDN fetch error for {fname}: {e}")
 
@@ -512,8 +512,8 @@ def get_full_document(module_name: str):
             import requests
             direct_url = f"https://idrhzigiaewgtqexfgbj.supabase.co/storage/v1/object/public/pmb-documents/master_md/{fname}"
             r = requests.get(direct_url, headers=headers, timeout=12)
-            if r.status_code == 200 and r.text:
-                content = r.text
+            if r.status_code == 200 and r.content:
+                content = r.content.decode("utf-8", errors="replace")
         except Exception:
             pass
 
